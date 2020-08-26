@@ -10,12 +10,12 @@ namespace FormFlow
             string instanceId,
             Type stateType,
             object state,
-            IReadOnlyDictionary<string, object> items)
+            IReadOnlyDictionary<string, object> properties)
         {
             Key = key ?? throw new ArgumentNullException(nameof(key));
             StateType = stateType ?? throw new ArgumentNullException(nameof(stateType));
             InstanceId = instanceId ?? throw new ArgumentNullException(nameof(instanceId));
-            Items = items ?? throw new ArgumentNullException(nameof(items));
+            Properties = properties ?? throw new ArgumentNullException(nameof(properties));
             State = state ?? throw new ArgumentNullException(nameof(state));
         }
 
@@ -23,7 +23,7 @@ namespace FormFlow
 
         public string InstanceId { get; }
 
-        public IReadOnlyDictionary<string, object> Items { get; }
+        public IReadOnlyDictionary<string, object> Properties { get; }
 
         public object State { get; }
 
@@ -34,10 +34,10 @@ namespace FormFlow
             string instanceId,
             Type stateType,
             object state,
-            IReadOnlyDictionary<string, object> items)
+            IReadOnlyDictionary<string, object> properties)
         {
             var genericType = typeof(Instance<>).MakeGenericType(stateType);
-            return (Instance)Activator.CreateInstance(genericType, key, instanceId, state, items);
+            return (Instance)Activator.CreateInstance(genericType, key, instanceId, state, properties);
         }
     }
 
@@ -47,8 +47,8 @@ namespace FormFlow
             string key,
             string instanceId,
             TState state,
-            IReadOnlyDictionary<string, object> items)
-            : base(key, instanceId, typeof(TState), state, items)
+            IReadOnlyDictionary<string, object> properties)
+            : base(key, instanceId, typeof(TState), state, properties)
         {
         }
 
