@@ -1,6 +1,6 @@
 ﻿using System;
 using FormFlow.Metadata;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FormFlow
 {
@@ -8,17 +8,19 @@ namespace FormFlow
     {
         private const string IdQueryParameterName = "ffiid";
 
-        public string ResolveId(HttpRequest request, FormFlowActionDescriptor flowDescriptor)
+        public string ResolveId(ActionContext actionContext, FormFlowActionDescriptor flowDescriptor)
         {
-            if (request == null)
+            if (actionContext == null)
             {
-                throw new ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(actionContext));
             }
 
             if (flowDescriptor == null)
             {
                 throw new ArgumentNullException(nameof(flowDescriptor));
             }
+
+            var request = actionContext.HttpContext.Request;
 
             return request.Query[IdQueryParameterName].ToString();
         }

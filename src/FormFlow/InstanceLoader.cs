@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using FormFlow.Metadata;
 using FormFlow.State;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.Extensions.Logging;
@@ -42,7 +41,7 @@ namespace FormFlow
                 return null;
             }
 
-            var instanceId = _idResolver.ResolveId(actionContext.HttpContext.Request, flowDescriptor);
+            var instanceId = _idResolver.ResolveId(actionContext, flowDescriptor);
             if (string.IsNullOrEmpty(instanceId))
             {
                 _logger.LogWarning(
