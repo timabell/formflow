@@ -11,15 +11,15 @@ namespace FormFlow
 {
     public class InstanceLoader
     {
-        private const string InstanceIdParameterName = "ffiid";
-
         private readonly IInstanceStateProvider _stateProvider;
         private readonly ILogger<InstanceLoader> _logger;
+        private readonly IdResolver _idResolver;
 
         public InstanceLoader(IInstanceStateProvider stateProvider, ILogger<InstanceLoader> logger)
         {
             _stateProvider = stateProvider ?? throw new ArgumentNullException(nameof(stateProvider));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _idResolver = new IdResolver();
         }
 
         public async Task<Instance> Resolve(ActionContext actionContext)
@@ -42,7 +42,7 @@ namespace FormFlow
                 return null;
             }
 
-            var instanceId = ExtractId(actionContext.HttpContext.Request, flowDescriptor);
+            var instanceId = _idResolver.ResolveId(actionContext.HttpContext.Request, flowDescriptor);
             if (string.IsNullOrEmpty(instanceId))
             {
                 _logger.LogWarning(
@@ -95,14 +95,6 @@ namespace FormFlow
             actionContext.HttpContext.Features.Set(new FormFlowInstanceFeature(instance));
 
             return instance;
-        }
-
-        private string ExtractId(HttpRequest request, FormFlowActionDescriptor flowDescriptor)
-        {
-            // For now look for an 'ffiid' instance parameter
-            // TODO support specifying how to lookup ID in the FormFlowActionAttribute
-
-            return request.Query[InstanceIdParameterName].ToString();
         }
     }
 }
