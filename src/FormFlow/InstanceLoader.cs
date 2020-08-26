@@ -9,14 +9,14 @@ using Microsoft.Extensions.Logging;
 
 namespace FormFlow
 {
-    public class InstanceResolver
+    public class InstanceLoader
     {
         private const string InstanceIdParameterName = "ffiid";
 
         private readonly IInstanceStateProvider _stateProvider;
-        private readonly ILogger<InstanceResolver> _logger;
+        private readonly ILogger<InstanceLoader> _logger;
 
-        public InstanceResolver(IInstanceStateProvider stateProvider, ILogger<InstanceResolver> logger)
+        public InstanceLoader(IInstanceStateProvider stateProvider, ILogger<InstanceLoader> logger)
         {
             _stateProvider = stateProvider ?? throw new ArgumentNullException(nameof(stateProvider));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));

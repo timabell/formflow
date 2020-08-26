@@ -12,7 +12,7 @@ using Xunit;
 
 namespace FormFlow.Tests
 {
-    public class InstanceResolverTests
+    public class InstanceLoaderTests
     {
         [Fact]
         public async Task Resolve_ActionDescriptorHasNoFormFlowActionDescriptor_ReturnsNull()
@@ -20,9 +20,9 @@ namespace FormFlow.Tests
             // Arrange
             var stateProvider = new Mock<IInstanceStateProvider>();
 
-            var instanceResolver = new InstanceResolver(
+            var instanceResolver = new InstanceLoader(
                 stateProvider.Object,
-                NullLogger<InstanceResolver>.Instance);
+                NullLogger<InstanceLoader>.Instance);
 
             var httpContext = new DefaultHttpContext();
             var routeData = new RouteData();
@@ -51,9 +51,9 @@ namespace FormFlow.Tests
                 .Setup(s => s.GetInstance(instanceId))
                 .ReturnsAsync(Instance.Create(key, instanceId, stateType, state, properties: new Dictionary<string, object>()));
 
-            var instanceResolver = new InstanceResolver(
+            var instanceResolver = new InstanceLoader(
                 stateProvider.Object,
-                NullLogger<InstanceResolver>.Instance);
+                NullLogger<InstanceLoader>.Instance);
 
             var httpContext = new DefaultHttpContext();
             httpContext.Request.QueryString = new QueryString($"?");
@@ -82,9 +82,9 @@ namespace FormFlow.Tests
 
             var stateProvider = new Mock<IInstanceStateProvider>();
 
-            var instanceResolver = new InstanceResolver(
+            var instanceResolver = new InstanceLoader(
                 stateProvider.Object,
-                NullLogger<InstanceResolver>.Instance);
+                NullLogger<InstanceLoader>.Instance);
 
             var httpContext = new DefaultHttpContext();
             httpContext.Request.QueryString = new QueryString($"?ffiid={instanceId}");
@@ -117,9 +117,9 @@ namespace FormFlow.Tests
                 .Setup(s => s.GetInstance(instanceId))
                 .ReturnsAsync(Instance.Create(key, instanceId, stateType, state, properties: new Dictionary<string, object>()));
 
-            var instanceResolver = new InstanceResolver(
+            var instanceResolver = new InstanceLoader(
                 stateProvider.Object,
-                NullLogger<InstanceResolver>.Instance);
+                NullLogger<InstanceLoader>.Instance);
 
             var httpContext = new DefaultHttpContext();
             httpContext.Request.QueryString = new QueryString($"?ffiid={instanceId}");
@@ -152,9 +152,9 @@ namespace FormFlow.Tests
                 .Setup(s => s.GetInstance(instanceId))
                 .ReturnsAsync(Instance.Create(key, instanceId, stateType, state, properties: new Dictionary<string, object>()));
 
-            var instanceResolver = new InstanceResolver(
+            var instanceResolver = new InstanceLoader(
                 stateProvider.Object,
-                NullLogger<InstanceResolver>.Instance);
+                NullLogger<InstanceLoader>.Instance);
 
             var httpContext = new DefaultHttpContext();
             httpContext.Request.QueryString = new QueryString($"?ffiid={instanceId}");
@@ -187,9 +187,9 @@ namespace FormFlow.Tests
                 .Setup(s => s.GetInstance(instanceId))
                 .ReturnsAsync(Instance.Create(key, instanceId, stateType, state, properties: new Dictionary<string, object>()));
 
-            var instanceResolver = new InstanceResolver(
+            var instanceResolver = new InstanceLoader(
                 stateProvider.Object,
-                NullLogger<InstanceResolver>.Instance);
+                NullLogger<InstanceLoader>.Instance);
 
             var httpContext = new DefaultHttpContext();
             httpContext.Request.QueryString = new QueryString($"?ffiid={instanceId}");
