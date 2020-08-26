@@ -10,7 +10,7 @@ namespace FormFlow
             string instanceId,
             Type stateType,
             object state,
-            IReadOnlyDictionary<string, object> properties)
+            IReadOnlyDictionary<object, object> properties)
         {
             Key = key ?? throw new ArgumentNullException(nameof(key));
             StateType = stateType ?? throw new ArgumentNullException(nameof(stateType));
@@ -23,7 +23,7 @@ namespace FormFlow
 
         public string InstanceId { get; }
 
-        public IReadOnlyDictionary<string, object> Properties { get; }
+        public IReadOnlyDictionary<object, object> Properties { get; }
 
         public object State { get; }
 
@@ -47,11 +47,11 @@ namespace FormFlow
             string key,
             string instanceId,
             TState state,
-            IReadOnlyDictionary<string, object> properties)
+            IReadOnlyDictionary<object, object> properties)
             : base(key, instanceId, typeof(TState), state, properties)
         {
         }
 
-        public new object State => (TState)base.State;
+        public new TState State => (TState)base.State;
     }
 }
