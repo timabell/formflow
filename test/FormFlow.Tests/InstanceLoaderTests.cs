@@ -49,7 +49,7 @@ namespace FormFlow.Tests
             var stateProvider = new Mock<IInstanceStateProvider>();
             stateProvider
                 .Setup(s => s.GetInstance(instanceId))
-                .ReturnsAsync(Instance.Create(key, instanceId, stateType, state, properties: new Dictionary<string, object>()));
+                .ReturnsAsync(Instance.Create(key, instanceId, stateType, state, properties: new Dictionary<object, object>()));
 
             var instanceResolver = new InstanceLoader(
                 stateProvider.Object,
@@ -115,7 +115,7 @@ namespace FormFlow.Tests
             var stateProvider = new Mock<IInstanceStateProvider>();
             stateProvider
                 .Setup(s => s.GetInstance(instanceId))
-                .ReturnsAsync(Instance.Create(key, instanceId, stateType, state, properties: new Dictionary<string, object>()));
+                .ReturnsAsync(Instance.Create(key, instanceId, stateType, state, properties: new Dictionary<object, object>()));
 
             var instanceResolver = new InstanceLoader(
                 stateProvider.Object,
@@ -150,7 +150,7 @@ namespace FormFlow.Tests
             var stateProvider = new Mock<IInstanceStateProvider>();
             stateProvider
                 .Setup(s => s.GetInstance(instanceId))
-                .ReturnsAsync(Instance.Create(key, instanceId, stateType, state, properties: new Dictionary<string, object>()));
+                .ReturnsAsync(Instance.Create(key, instanceId, stateType, state, properties: new Dictionary<object, object>()));
 
             var instanceResolver = new InstanceLoader(
                 stateProvider.Object,
@@ -185,7 +185,7 @@ namespace FormFlow.Tests
             var stateProvider = new Mock<IInstanceStateProvider>();
             stateProvider
                 .Setup(s => s.GetInstance(instanceId))
-                .ReturnsAsync(Instance.Create(key, instanceId, stateType, state, properties: new Dictionary<string, object>()));
+                .ReturnsAsync(Instance.Create(key, instanceId, stateType, state, properties: new Dictionary<object, object>()));
 
             var instanceResolver = new InstanceLoader(
                 stateProvider.Object,

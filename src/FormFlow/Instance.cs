@@ -34,7 +34,7 @@ namespace FormFlow
             string instanceId,
             Type stateType,
             object state,
-            IReadOnlyDictionary<string, object> properties)
+            IReadOnlyDictionary<object, object> properties)
         {
             var genericType = typeof(Instance<>).MakeGenericType(stateType);
             return (Instance)Activator.CreateInstance(genericType, key, instanceId, state, properties);
