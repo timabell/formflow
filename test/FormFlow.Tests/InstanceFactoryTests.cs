@@ -22,7 +22,7 @@ namespace FormFlow.Tests
             var stateType = typeof(TestState);
             var state = new TestState();
 
-            var flowDescriptor = new FormFlowActionDescriptor(key, stateType);
+            var flowDescriptor = new FormFlowActionDescriptor(key, stateType, IdGenerationSource.RandomId);
 
             var httpContext = new DefaultHttpContext();
 
@@ -49,7 +49,7 @@ namespace FormFlow.Tests
             var key = "test-flow";
             var stateType = typeof(TestState);
 
-            var flowDescriptor = new FormFlowActionDescriptor(key, stateType);
+            var flowDescriptor = new FormFlowActionDescriptor(key, stateType, IdGenerationSource.RandomId);
 
             var httpContext = new DefaultHttpContext();
 
@@ -82,6 +82,46 @@ namespace FormFlow.Tests
             Assert.Equal(2, instance.Properties.Count);
             Assert.Equal(42, instance.Properties["foo"]);
             Assert.Equal("baz", instance.Properties["bar"]);
+        }
+
+        [Fact]
+        public async Task CreateInstance_RouteValuesIdGenerationSource_CreatesInstanceWithGeneratedId()
+        {
+            // Arrange
+            var key = "test-flow";
+            var stateType = typeof(TestState);
+
+            var flowDescriptor = new FormFlowActionDescriptor(
+                key,
+                stateType,
+                IdGenerationSource.RouteValues,
+                idRouteParameterNames: new[] { "id1", "id2" });
+
+            var httpContext = new DefaultHttpContext();
+
+            var routeData = new RouteData(new RouteValueDictionary()
+            {
+                { "id1", "foo" },
+                { "id2", "bar" }
+            });
+
+            var actionDescriptor = new ActionDescriptor();
+            actionDescriptor.SetProperty(flowDescriptor);
+
+            var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
+
+            var stateProvider = new InMemoryInstanceStateProvider();
+
+            var instanceFactory = new InstanceFactory(flowDescriptor, actionContext, stateProvider);
+
+            var state = new TestState();
+
+            // Act
+            var instance = await instanceFactory.CreateInstance(state);
+
+            // Assert
+            Assert.NotNull(instance);
+            Assert.Equal("test-flow?id1=foo&id2=bar", instance.InstanceId);
         }
 
         private class TestState { }

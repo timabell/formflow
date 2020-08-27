@@ -10,7 +10,6 @@ namespace FormFlow.ModelBinding
     public class InstanceModelBinder : IModelBinder
     {
         private readonly IInstanceStateProvider _stateProvider;
-        private readonly IdResolver _idResolver = new IdResolver();
 
         public InstanceModelBinder(IInstanceStateProvider stateProvider)
         {
@@ -31,8 +30,7 @@ namespace FormFlow.ModelBinding
                 return;
             }
 
-            var instanceId = _idResolver.ResolveId(bindingContext.ActionContext, flowDescriptor);
-            if (string.IsNullOrEmpty(instanceId))
+            if (!InstanceId.TryResolve(bindingContext.ActionContext, flowDescriptor, out var instanceId))
             {
                 return;
             }

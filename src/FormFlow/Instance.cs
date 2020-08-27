@@ -7,21 +7,21 @@ namespace FormFlow
     {
         private protected Instance(
             string key,
-            string instanceId,
+            InstanceId instanceId,
             Type stateType,
             object state,
             IReadOnlyDictionary<object, object> properties)
         {
             Key = key ?? throw new ArgumentNullException(nameof(key));
             StateType = stateType ?? throw new ArgumentNullException(nameof(stateType));
-            InstanceId = instanceId ?? throw new ArgumentNullException(nameof(instanceId));
+            InstanceId = instanceId;
             Properties = properties ?? throw new ArgumentNullException(nameof(properties));
             State = state ?? throw new ArgumentNullException(nameof(state));
         }
 
         public string Key { get; }
 
-        public string InstanceId { get; }
+        public InstanceId InstanceId { get; }
 
         public IReadOnlyDictionary<object, object> Properties { get; }
 
@@ -31,7 +31,7 @@ namespace FormFlow
 
         public static Instance Create(
             string key,
-            string instanceId,
+            InstanceId instanceId,
             Type stateType,
             object state,
             IReadOnlyDictionary<object, object> properties)
@@ -45,7 +45,7 @@ namespace FormFlow
     {
         public Instance(
             string key,
-            string instanceId,
+            InstanceId instanceId,
             TState state,
             IReadOnlyDictionary<object, object> properties)
             : base(key, instanceId, typeof(TState), state, properties)

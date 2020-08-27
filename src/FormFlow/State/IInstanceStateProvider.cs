@@ -8,11 +8,11 @@ namespace FormFlow.State
     {
         Task<Instance> CreateInstance(
             string key,
-            string instanceId,
+            InstanceId instanceId,
             Type stateType,
             object state,
             IReadOnlyDictionary<object, object> properties);
 
-        Task<Instance> GetInstance(string instanceId);
+        Task<Instance> GetInstance(InstanceId instanceId);
     }
 }

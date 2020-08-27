@@ -42,7 +42,7 @@ namespace FormFlow.Tests
         {
             // Arrange
             var key = "test-flow";
-            var instanceId = "the-instance";
+            var instanceId = new InstanceId("the-instance", new RouteValueDictionary());
             var stateType = typeof(TestState);
             var state = new TestState();
 
@@ -61,7 +61,7 @@ namespace FormFlow.Tests
             var routeData = new RouteData();
 
             var actionDescriptor = new ActionDescriptor();
-            actionDescriptor.SetProperty(new FormFlowActionDescriptor(key, stateType));
+            actionDescriptor.SetProperty(new FormFlowActionDescriptor(key, stateType, IdGenerationSource.RandomId));
 
             var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
 
@@ -89,10 +89,13 @@ namespace FormFlow.Tests
             var httpContext = new DefaultHttpContext();
             httpContext.Request.QueryString = new QueryString($"?ffiid={instanceId}");
 
-            var routeData = new RouteData();
+            var routeData = new RouteData(new RouteValueDictionary()
+            {
+                { "ffiid", instanceId }
+            });
 
             var actionDescriptor = new ActionDescriptor();
-            actionDescriptor.SetProperty(new FormFlowActionDescriptor(key, stateType));
+            actionDescriptor.SetProperty(new FormFlowActionDescriptor(key, stateType, IdGenerationSource.RandomId));
 
             var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
 
@@ -108,7 +111,7 @@ namespace FormFlow.Tests
         {
             // Arrange
             var key = "test-flow";
-            var instanceId = "the-instance";
+            var instanceId = new InstanceId("the-instance", new RouteValueDictionary());
             var stateType = typeof(TestState);
             var state = new TestState();
 
@@ -124,10 +127,13 @@ namespace FormFlow.Tests
             var httpContext = new DefaultHttpContext();
             httpContext.Request.QueryString = new QueryString($"?ffiid={instanceId}");
 
-            var routeData = new RouteData();
+            var routeData = new RouteData(new RouteValueDictionary()
+            {
+                { "ffiid", instanceId }
+            });
 
             var actionDescriptor = new ActionDescriptor();
-            actionDescriptor.SetProperty(new FormFlowActionDescriptor("another-key", stateType));
+            actionDescriptor.SetProperty(new FormFlowActionDescriptor("another-key", stateType, IdGenerationSource.RandomId));
 
             var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
 
@@ -143,7 +149,7 @@ namespace FormFlow.Tests
         {
             // Arrange
             var key = "test-flow";
-            var instanceId = "the-instance";
+            var instanceId = new InstanceId("the-instance", new RouteValueDictionary());
             var stateType = typeof(TestState);
             var state = new TestState();
 
@@ -159,10 +165,13 @@ namespace FormFlow.Tests
             var httpContext = new DefaultHttpContext();
             httpContext.Request.QueryString = new QueryString($"?ffiid={instanceId}");
 
-            var routeData = new RouteData();
+            var routeData = new RouteData(new RouteValueDictionary()
+            {
+                { "ffiid", instanceId }
+            });
 
             var actionDescriptor = new ActionDescriptor();
-            actionDescriptor.SetProperty(new FormFlowActionDescriptor(key, typeof(AnotherTestState)));
+            actionDescriptor.SetProperty(new FormFlowActionDescriptor(key, typeof(AnotherTestState), IdGenerationSource.RandomId));
 
             var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
 
@@ -178,7 +187,7 @@ namespace FormFlow.Tests
         {
             // Arrange
             var key = "test-flow";
-            var instanceId = "the-instance";
+            var instanceId = new InstanceId("the-instance", new RouteValueDictionary());
             var stateType = typeof(TestState);
             var state = new TestState();
             
@@ -194,10 +203,13 @@ namespace FormFlow.Tests
             var httpContext = new DefaultHttpContext();
             httpContext.Request.QueryString = new QueryString($"?ffiid={instanceId}");
 
-            var routeData = new RouteData();
+            var routeData = new RouteData(new RouteValueDictionary()
+            {
+                { "ffiid", instanceId }
+            });
 
             var actionDescriptor = new ActionDescriptor();
-            actionDescriptor.SetProperty(new FormFlowActionDescriptor(key, stateType));
+            actionDescriptor.SetProperty(new FormFlowActionDescriptor(key, stateType, IdGenerationSource.RandomId));
 
             var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
 

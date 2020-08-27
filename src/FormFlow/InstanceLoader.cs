@@ -12,13 +12,11 @@ namespace FormFlow
     {
         private readonly IInstanceStateProvider _stateProvider;
         private readonly ILogger<InstanceLoader> _logger;
-        private readonly IdResolver _idResolver;
 
         public InstanceLoader(IInstanceStateProvider stateProvider, ILogger<InstanceLoader> logger)
         {
             _stateProvider = stateProvider ?? throw new ArgumentNullException(nameof(stateProvider));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _idResolver = new IdResolver();
         }
 
         public async Task<Instance> Resolve(ActionContext actionContext)
@@ -41,8 +39,7 @@ namespace FormFlow
                 return null;
             }
 
-            var instanceId = _idResolver.ResolveId(actionContext, flowDescriptor);
-            if (string.IsNullOrEmpty(instanceId))
+            if (!InstanceId.TryResolve(actionContext, flowDescriptor, out var instanceId))
             {
                 _logger.LogWarning(
                     "Failed to extract ID from request.\n" +

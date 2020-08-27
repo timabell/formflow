@@ -21,7 +21,7 @@ namespace FormFlow.State
 
         public Task<Instance> CreateInstance(
             string key,
-            string instanceId,
+            InstanceId instanceId,
             Type stateType,
             object state,
             IReadOnlyDictionary<object, object> properties)
@@ -29,11 +29,6 @@ namespace FormFlow.State
             if (key == null)
             {
                 throw new ArgumentNullException(nameof(key));
-            }
-
-            if (instanceId == null)
-            {
-                throw new ArgumentNullException(nameof(instanceId));
             }
 
             if (stateType == null)
@@ -65,7 +60,7 @@ namespace FormFlow.State
             return Task.FromResult(instance);
         }
 
-        public Task<Instance> GetInstance(string instanceId)
+        public Task<Instance> GetInstance(InstanceId instanceId)
         {
             var session = _httpContextAccessor.HttpContext.Session;
             var sessionKey = GetSessionKeyForInstance(instanceId);

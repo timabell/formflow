@@ -18,7 +18,7 @@ namespace FormFlow.Tests
 
         public Task<Instance> CreateInstance(
             string key,
-            string instanceId,
+            InstanceId instanceId,
             Type stateType,
             object state,
             IReadOnlyDictionary<object, object> properties)
@@ -35,7 +35,7 @@ namespace FormFlow.Tests
             return Task.FromResult(instance);
         }
 
-        public Task<Instance> GetInstance(string instanceId)
+        public Task<Instance> GetInstance(InstanceId instanceId)
         {
             _instances.TryGetValue(instanceId, out var instance);
 
