@@ -24,7 +24,7 @@ namespace FormFlow.ModelBinding
                 return;
             }
 
-            var flowDescriptor = bindingContext.ActionContext.ActionDescriptor.GetProperty<FormFlowActionDescriptor>();
+            var flowDescriptor = bindingContext.ActionContext.ActionDescriptor.GetProperty<FormFlowDescriptor>();
             if (flowDescriptor == null)
             {
                 return;

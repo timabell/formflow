@@ -23,7 +23,7 @@ namespace FormFlow
 
         public static InstanceId Generate(
             ActionContext actionContext,
-            FormFlowActionDescriptor flowDescriptor)
+            FormFlowDescriptor flowDescriptor)
         {
             if (actionContext == null)
             {
@@ -76,7 +76,7 @@ namespace FormFlow
 
         public static bool TryResolve(
             ActionContext actionContext,
-            FormFlowActionDescriptor flowDescriptor,
+            FormFlowDescriptor flowDescriptor,
             out InstanceId instanceId)
         {
             if (actionContext == null)

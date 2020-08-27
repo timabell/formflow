@@ -61,7 +61,7 @@ namespace FormFlow.Tests
             var routeData = new RouteData();
 
             var actionDescriptor = new ActionDescriptor();
-            actionDescriptor.SetProperty(new FormFlowActionDescriptor(key, stateType, IdGenerationSource.RandomId));
+            actionDescriptor.SetProperty(new FormFlowDescriptor(key, stateType, IdGenerationSource.RandomId));
 
             var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
 
@@ -95,7 +95,7 @@ namespace FormFlow.Tests
             });
 
             var actionDescriptor = new ActionDescriptor();
-            actionDescriptor.SetProperty(new FormFlowActionDescriptor(key, stateType, IdGenerationSource.RandomId));
+            actionDescriptor.SetProperty(new FormFlowDescriptor(key, stateType, IdGenerationSource.RandomId));
 
             var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
 
@@ -133,7 +133,7 @@ namespace FormFlow.Tests
             });
 
             var actionDescriptor = new ActionDescriptor();
-            actionDescriptor.SetProperty(new FormFlowActionDescriptor("another-key", stateType, IdGenerationSource.RandomId));
+            actionDescriptor.SetProperty(new FormFlowDescriptor("another-key", stateType, IdGenerationSource.RandomId));
 
             var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
 
@@ -171,7 +171,7 @@ namespace FormFlow.Tests
             });
 
             var actionDescriptor = new ActionDescriptor();
-            actionDescriptor.SetProperty(new FormFlowActionDescriptor(key, typeof(AnotherTestState), IdGenerationSource.RandomId));
+            actionDescriptor.SetProperty(new FormFlowDescriptor(key, typeof(AnotherTestState), IdGenerationSource.RandomId));
 
             var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
 
@@ -209,7 +209,7 @@ namespace FormFlow.Tests
             });
 
             var actionDescriptor = new ActionDescriptor();
-            actionDescriptor.SetProperty(new FormFlowActionDescriptor(key, stateType, IdGenerationSource.RandomId));
+            actionDescriptor.SetProperty(new FormFlowDescriptor(key, stateType, IdGenerationSource.RandomId));
 
             var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
 

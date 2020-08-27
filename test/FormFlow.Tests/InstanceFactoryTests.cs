@@ -22,7 +22,7 @@ namespace FormFlow.Tests
             var stateType = typeof(TestState);
             var state = new TestState();
 
-            var flowDescriptor = new FormFlowActionDescriptor(key, stateType, IdGenerationSource.RandomId);
+            var flowDescriptor = new FormFlowDescriptor(key, stateType, IdGenerationSource.RandomId);
 
             var httpContext = new DefaultHttpContext();
 
@@ -49,7 +49,7 @@ namespace FormFlow.Tests
             var key = "test-flow";
             var stateType = typeof(TestState);
 
-            var flowDescriptor = new FormFlowActionDescriptor(key, stateType, IdGenerationSource.RandomId);
+            var flowDescriptor = new FormFlowDescriptor(key, stateType, IdGenerationSource.RandomId);
 
             var httpContext = new DefaultHttpContext();
 
@@ -91,7 +91,7 @@ namespace FormFlow.Tests
             var key = "test-flow";
             var stateType = typeof(TestState);
 
-            var flowDescriptor = new FormFlowActionDescriptor(
+            var flowDescriptor = new FormFlowDescriptor(
                 key,
                 stateType,
                 IdGenerationSource.RouteValues,

@@ -32,7 +32,7 @@ namespace FormFlow
                 return feature.Instance;
             }
             
-            var flowDescriptor = actionContext.ActionDescriptor.GetProperty<FormFlowActionDescriptor>();
+            var flowDescriptor = actionContext.ActionDescriptor.GetProperty<FormFlowDescriptor>();
             if (flowDescriptor == null)
             {
                 _logger.LogWarning("Cannot find flow metadata on action.");

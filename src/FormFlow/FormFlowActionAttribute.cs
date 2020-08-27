@@ -39,9 +39,9 @@ namespace FormFlow
 
         private void AddMetadataToAction(ActionModel action)
         {
-            var descriptor = new FormFlowActionDescriptor(Key, StateType, IdGenerationSource, IdRouteParameterNames);
+            var descriptor = new FormFlowDescriptor(Key, StateType, IdGenerationSource, IdRouteParameterNames);
 
-            action.Properties.Add(typeof(FormFlowActionDescriptor), descriptor);
+            action.Properties.Add(typeof(FormFlowDescriptor), descriptor);
         }
     }
 }

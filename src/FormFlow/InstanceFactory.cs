@@ -9,12 +9,12 @@ namespace FormFlow
 {
     public class InstanceFactory
     {
-        private readonly FormFlowActionDescriptor _flowDescriptor;
+        private readonly FormFlowDescriptor _flowDescriptor;
         private readonly ActionContext _actionContext;
         private readonly IInstanceStateProvider _stateProvider;
 
         public InstanceFactory(
-            FormFlowActionDescriptor flowDescriptor,
+            FormFlowDescriptor flowDescriptor,
             ActionContext actionContext,
             IInstanceStateProvider stateProvider)
         {

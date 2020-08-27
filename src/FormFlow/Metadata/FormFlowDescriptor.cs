@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace FormFlow.Metadata
 {
-    public class FormFlowActionDescriptor
+    public class FormFlowDescriptor
     {
-        public FormFlowActionDescriptor(
+        public FormFlowDescriptor(
             string key,
             Type stateType,
             IdGenerationSource idGenerationSource,

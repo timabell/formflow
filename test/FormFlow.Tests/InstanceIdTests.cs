@@ -13,7 +13,7 @@ namespace FormFlow.Tests
         public void TryResolve_RandomIdGenerationSourceMissingQueryParameter_ReturnsFalse()
         {
             // Arrange
-            var flowDescriptor = new FormFlowActionDescriptor(
+            var flowDescriptor = new FormFlowDescriptor(
                 key: "key",
                 stateType: typeof(MyState),
                 idGenerationSource: IdGenerationSource.RandomId);
@@ -38,7 +38,7 @@ namespace FormFlow.Tests
         public void TryResolve_RandomIdGenerationSourceContainsQueryParameter_ReturnsTrue()
         {
             // Arrange
-            var flowDescriptor = new FormFlowActionDescriptor(
+            var flowDescriptor = new FormFlowDescriptor(
                 key: "key",
                 stateType: typeof(MyState),
                 idGenerationSource: IdGenerationSource.RandomId);
@@ -65,7 +65,7 @@ namespace FormFlow.Tests
         public void TryResolve_RouteValuesGenerationSourceMissingRouteParameter_ReturnsFalse()
         {
             // Arrange
-            var flowDescriptor = new FormFlowActionDescriptor(
+            var flowDescriptor = new FormFlowDescriptor(
                 key: "key",
                 stateType: typeof(MyState),
                 idGenerationSource: IdGenerationSource.RouteValues,
@@ -94,7 +94,7 @@ namespace FormFlow.Tests
         public void TryResolve_RouteValuesGenerationSourceContainsAllRouteParameters_ReturnsTrue()
         {
             // Arrange
-            var flowDescriptor = new FormFlowActionDescriptor(
+            var flowDescriptor = new FormFlowDescriptor(
                 key: "key",
                 stateType: typeof(MyState),
                 idGenerationSource: IdGenerationSource.RouteValues,
