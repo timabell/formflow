@@ -96,5 +96,16 @@ namespace FormFlow
         public new TState State => (TState)base.State;
 
         public Task UpdateState(TState state) => UpdateState((object)state);
+
+        public Task UpdateState(Func<TState, TState> update)
+        {
+            if (update == null)
+            {
+                throw new ArgumentNullException(nameof(update));
+            }
+
+            var newState = update(State);
+            return UpdateState(newState);
+        }
     }
 }
