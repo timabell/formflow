@@ -23,7 +23,7 @@ namespace FormFlow
             _stateProvider = stateProvider ?? throw new ArgumentNullException(nameof(stateProvider));
         }
         
-        public async Task<Instance<TState>> CreateInstance<TState>(
+        public async Task<FormFlowInstance<TState>> CreateInstance<TState>(
             TState state,
             IReadOnlyDictionary<object, object> properties = null)
         {
@@ -40,7 +40,7 @@ namespace FormFlow
 
             var instanceId = FormFlowInstanceId.Generate(_actionContext, _flowDescriptor);
 
-            return (Instance<TState>)await _stateProvider.CreateInstance(
+            return (FormFlowInstance<TState>)await _stateProvider.CreateInstance(
                 _flowDescriptor.Key,
                 instanceId,
                 _flowDescriptor.StateType,

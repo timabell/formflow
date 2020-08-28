@@ -17,7 +17,7 @@ namespace FormFlow.Tests
 
             var stateProvider = new Mock<IInstanceStateProvider>();
 
-            var instance = (Instance<MyState>)FormFlowInstance.Create(
+            var instance = (FormFlowInstance<MyState>)FormFlowInstance.Create(
                 stateProvider.Object,
                 "key",
                 instanceId,
@@ -42,7 +42,7 @@ namespace FormFlow.Tests
 
             var stateProvider = new Mock<IInstanceStateProvider>();
 
-            var instance = (Instance<MyState>)FormFlowInstance.Create(
+            var instance = (FormFlowInstance<MyState>)FormFlowInstance.Create(
                 stateProvider.Object,
                 "key",
                 instanceId,
@@ -66,7 +66,7 @@ namespace FormFlow.Tests
 
             var stateProvider = new Mock<IInstanceStateProvider>();
 
-            var instance = (Instance<MyState>)FormFlowInstance.Create(
+            var instance = (FormFlowInstance<MyState>)FormFlowInstance.Create(
                 stateProvider.Object,
                 "key",
                 instanceId,

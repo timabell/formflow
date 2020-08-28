@@ -9,7 +9,7 @@ namespace FormFlow.ModelBinding
         public IModelBinder GetBinder(ModelBinderProviderContext context)
         {
             if (context.Metadata.ModelType == typeof(FormFlowInstance) ||
-                (context.Metadata.ModelType.IsGenericType && context.Metadata.ModelType.GetGenericTypeDefinition() == typeof(Instance<>)))
+                (context.Metadata.ModelType.IsGenericType && context.Metadata.ModelType.GetGenericTypeDefinition() == typeof(FormFlowInstance<>)))
             {
                 var stateProvider = context.Services.GetRequiredService<IInstanceStateProvider>();
                 return new InstanceModelBinder(stateProvider);

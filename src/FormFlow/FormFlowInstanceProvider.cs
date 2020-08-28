@@ -18,9 +18,9 @@ namespace FormFlow
             return httpContext.Features.Get<FormFlowInstanceFeature>()?.Instance;
         }
 
-        public Instance<T> GetInstance<T>()
+        public FormFlowInstance<T> GetInstance<T>()
         {
-            return (Instance<T>)GetInstance();
+            return (FormFlowInstance<T>)GetInstance();
         }
     }
 }

@@ -44,7 +44,7 @@ namespace FormFlow
             object state,
             IReadOnlyDictionary<object, object> properties)
         {
-            var genericType = typeof(Instance<>).MakeGenericType(stateType);
+            var genericType = typeof(FormFlowInstance<>).MakeGenericType(stateType);
             return (FormFlowInstance)Activator.CreateInstance(genericType, stateProvider, key, instanceId, state, properties);
         }
 
@@ -81,9 +81,9 @@ namespace FormFlow
         }
     }
 
-    public sealed class Instance<TState> : FormFlowInstance
+    public sealed class FormFlowInstance<TState> : FormFlowInstance
     {
-        public Instance(
+        public FormFlowInstance(
             IInstanceStateProvider stateProvider,
             string key,
             FormFlowInstanceId instanceId,
