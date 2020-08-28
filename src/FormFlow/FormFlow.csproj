@@ -2,6 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Copyright>Copyright © 2020 James Gunn</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/gunndabad/formflow</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/gunndabad/formflow</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags></PackageTags>
+    <VersionPrefix>0.1.0</VersionPrefix>
   </PropertyGroup>
 
   <ItemGroup>
