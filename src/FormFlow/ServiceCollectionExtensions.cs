@@ -1,5 +1,7 @@
 ﻿using System;
+using FormFlow.State;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace FormFlow
 {
@@ -14,6 +16,7 @@ namespace FormFlow
 
             services.AddHttpContextAccessor();
             services.AddSingleton<InstanceProvider>();
+            services.TryAddSingleton<IInstanceStateProvider, SessionInstanceStateProvider>();
 
             return services;
         }
