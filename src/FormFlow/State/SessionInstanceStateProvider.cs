@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
 
 namespace FormFlow.State
 {
@@ -56,8 +55,18 @@ namespace FormFlow.State
             var sessionKey = GetSessionKeyForInstance(instanceId);
             session.Set(sessionKey, serialized);
 
-            var instance = Instance.Create(key, instanceId, stateType, state, properties);
+            var instance = Instance.Create(this, key, instanceId, stateType, state, properties);
             return Task.FromResult(instance);
+        }
+
+        public Task DeleteInstance(InstanceId instanceId)
+        {
+            var session = _httpContextAccessor.HttpContext.Session;
+            var sessionKey = GetSessionKeyForInstance(instanceId);
+
+            session.Remove(sessionKey);
+
+            return Task.CompletedTask;
         }
 
         public Task<Instance> GetInstance(InstanceId instanceId)
@@ -72,6 +81,7 @@ namespace FormFlow.State
                 var stateType = Type.GetType(entry.StateTypeAssemblyQualifiedName);
 
                 var instance = Instance.Create(
+                    this,
                     entry.Key,
                     instanceId,
                     stateType,
@@ -83,6 +93,28 @@ namespace FormFlow.State
             {
                 return null;
             }
+        }
+
+        public Task UpdateInstanceState(InstanceId instanceId, object state)
+        {
+            var session = _httpContextAccessor.HttpContext.Session;
+            var sessionKey = GetSessionKeyForInstance(instanceId);
+
+            if (session.TryGetValue(sessionKey, out var serialized))
+            {
+                var entry = (SessionEntry)_stateSerializer.Deserialize(serialized);
+
+                entry.State = state;
+
+                var updateSerialized = _stateSerializer.Serialize(entry);
+                session.Set(sessionKey, updateSerialized);
+            }
+            else
+            {
+                throw new ArgumentException("Instance does not exist.", nameof(instanceId));
+            }
+
+            return Task.CompletedTask;
         }
 
         // TODO Make this configurable
