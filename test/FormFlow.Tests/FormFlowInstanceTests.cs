@@ -7,17 +7,17 @@ using Xunit;
 
 namespace FormFlow.Tests
 {
-    public class InstanceTests
+    public class FormFlowInstanceTests
     {
         [Fact]
         public async Task Delete_CallsDeleteOnStateProvider()
         {
             // Arrange
-            var instanceId = new InstanceId("instance", new Microsoft.AspNetCore.Routing.RouteValueDictionary());
+            var instanceId = new FormFlowInstanceId("instance", new Microsoft.AspNetCore.Routing.RouteValueDictionary());
 
             var stateProvider = new Mock<IInstanceStateProvider>();
 
-            var instance = (Instance<MyState>)Instance.Create(
+            var instance = (Instance<MyState>)FormFlowInstance.Create(
                 stateProvider.Object,
                 "key",
                 instanceId,
@@ -38,11 +38,11 @@ namespace FormFlow.Tests
         public async Task UpdateState_DeletedInstance_ThrowsInvalidOperationException()
         {
             // Arrange
-            var instanceId = new InstanceId("instance", new Microsoft.AspNetCore.Routing.RouteValueDictionary());
+            var instanceId = new FormFlowInstanceId("instance", new Microsoft.AspNetCore.Routing.RouteValueDictionary());
 
             var stateProvider = new Mock<IInstanceStateProvider>();
 
-            var instance = (Instance<MyState>)Instance.Create(
+            var instance = (Instance<MyState>)FormFlowInstance.Create(
                 stateProvider.Object,
                 "key",
                 instanceId,
@@ -62,11 +62,11 @@ namespace FormFlow.Tests
         public async Task UpdateState_CallsUpdateStateOnStateProvider()
         {
             // Arrange
-            var instanceId = new InstanceId("instance", new Microsoft.AspNetCore.Routing.RouteValueDictionary());
+            var instanceId = new FormFlowInstanceId("instance", new Microsoft.AspNetCore.Routing.RouteValueDictionary());
 
             var stateProvider = new Mock<IInstanceStateProvider>();
 
-            var instance = (Instance<MyState>)Instance.Create(
+            var instance = (Instance<MyState>)FormFlowInstance.Create(
                 stateProvider.Object,
                 "key",
                 instanceId,

@@ -7,14 +7,14 @@ namespace FormFlow
     {
         public static RedirectToActionResult WithFormFlowInstanceId(
             this RedirectToActionResult result,
-            Instance instance)
+            FormFlowInstance instance)
         {
             return WithFormFlowInstanceId(result, instance.InstanceId);
         }
 
         public static RedirectToActionResult WithFormFlowInstanceId(
             this RedirectToActionResult result,
-            InstanceId instanceId)
+            FormFlowInstanceId instanceId)
         {
             result.RouteValues ??= new RouteValueDictionary();
 

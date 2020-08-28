@@ -18,9 +18,9 @@ namespace FormFlow.State
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
-        public Task<Instance> CreateInstance(
+        public Task<FormFlowInstance> CreateInstance(
             string key,
-            InstanceId instanceId,
+            FormFlowInstanceId instanceId,
             Type stateType,
             object state,
             IReadOnlyDictionary<object, object> properties)
@@ -55,11 +55,11 @@ namespace FormFlow.State
             var sessionKey = GetSessionKeyForInstance(instanceId);
             session.Set(sessionKey, serialized);
 
-            var instance = Instance.Create(this, key, instanceId, stateType, state, properties);
+            var instance = FormFlowInstance.Create(this, key, instanceId, stateType, state, properties);
             return Task.FromResult(instance);
         }
 
-        public Task DeleteInstance(InstanceId instanceId)
+        public Task DeleteInstance(FormFlowInstanceId instanceId)
         {
             var session = _httpContextAccessor.HttpContext.Session;
             var sessionKey = GetSessionKeyForInstance(instanceId);
@@ -69,7 +69,7 @@ namespace FormFlow.State
             return Task.CompletedTask;
         }
 
-        public Task<Instance> GetInstance(InstanceId instanceId)
+        public Task<FormFlowInstance> GetInstance(FormFlowInstanceId instanceId)
         {
             var session = _httpContextAccessor.HttpContext.Session;
             var sessionKey = GetSessionKeyForInstance(instanceId);
@@ -80,7 +80,7 @@ namespace FormFlow.State
 
                 var stateType = Type.GetType(entry.StateTypeAssemblyQualifiedName);
 
-                var instance = Instance.Create(
+                var instance = FormFlowInstance.Create(
                     this,
                     entry.Key,
                     instanceId,
@@ -95,7 +95,7 @@ namespace FormFlow.State
             }
         }
 
-        public Task UpdateInstanceState(InstanceId instanceId, object state)
+        public Task UpdateInstanceState(FormFlowInstanceId instanceId, object state)
         {
             var session = _httpContextAccessor.HttpContext.Session;
             var sessionKey = GetSessionKeyForInstance(instanceId);

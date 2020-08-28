@@ -9,11 +9,11 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace FormFlow
 {
-    public readonly struct InstanceId : IEquatable<InstanceId>
+    public readonly struct FormFlowInstanceId : IEquatable<FormFlowInstanceId>
     {
         private readonly string _id;
 
-        internal InstanceId(string instanceId, RouteValueDictionary routeValues)
+        internal FormFlowInstanceId(string instanceId, RouteValueDictionary routeValues)
         {
             _id = instanceId ?? throw new ArgumentNullException(nameof(instanceId));
             RouteValues = routeValues ?? throw new ArgumentNullException(nameof(routeValues));
@@ -21,7 +21,7 @@ namespace FormFlow
 
         public IReadOnlyDictionary<string, object> RouteValues { get; }
 
-        public static InstanceId Generate(
+        public static FormFlowInstanceId Generate(
             ActionContext actionContext,
             FormFlowDescriptor flowDescriptor)
         {
@@ -48,12 +48,12 @@ namespace FormFlow
                 throw new NotSupportedException($"Unknown IdGenerationSource: '{flowDescriptor.IdGenerationSource}'.");
             }
 
-            InstanceId GenerateForRandomId()
+            FormFlowInstanceId GenerateForRandomId()
             {
                 // Always generate a new ID, even if incoming routeValues have an existing one
                 var id = Guid.NewGuid().ToString();
 
-                return new InstanceId(
+                return new FormFlowInstanceId(
                     id,
                     new RouteValueDictionary()
                     {
@@ -61,7 +61,7 @@ namespace FormFlow
                     });
             }
 
-            InstanceId GenerateForRouteValues()
+            FormFlowInstanceId GenerateForRouteValues()
             {
                 if (!TryResolve(actionContext, flowDescriptor, out var instanceId))
                 {
@@ -77,7 +77,7 @@ namespace FormFlow
         public static bool TryResolve(
             ActionContext actionContext,
             FormFlowDescriptor flowDescriptor,
-            out InstanceId instanceId)
+            out FormFlowInstanceId instanceId)
         {
             if (actionContext == null)
             {
@@ -102,7 +102,7 @@ namespace FormFlow
                 throw new NotSupportedException($"Unknown IdGenerationSource: '{flowDescriptor.IdGenerationSource}'.");
             }
 
-            bool TryCreateForRandomId(out InstanceId instanceId)
+            bool TryCreateForRandomId(out FormFlowInstanceId instanceId)
             {
                 var id = actionContext.HttpContext.Request.Query[Constants.InstanceIdQueryParameterName].ToString();
 
@@ -112,7 +112,7 @@ namespace FormFlow
                     return false;
                 }
 
-                instanceId = new InstanceId(
+                instanceId = new FormFlowInstanceId(
                     id,
                     new RouteValueDictionary()
                     {
@@ -122,7 +122,7 @@ namespace FormFlow
                 return true;
             }
 
-            bool TryCreateForRouteValues(out InstanceId instanceId)
+            bool TryCreateForRouteValues(out FormFlowInstanceId instanceId)
             {
                 var urlEncoder = UrlEncoder.Default;
 
@@ -145,23 +145,23 @@ namespace FormFlow
                     instanceRouteValues.Add(routeParam, routeValue);
                 }
 
-                instanceId = new InstanceId(id, instanceRouteValues);
+                instanceId = new FormFlowInstanceId(id, instanceRouteValues);
                 return true;
             }
         }
 
-        public bool Equals([AllowNull] InstanceId other) => _id == other._id;
+        public bool Equals([AllowNull] FormFlowInstanceId other) => _id == other._id;
 
-        public override bool Equals(object obj) => obj is InstanceId x && x.Equals(this);
+        public override bool Equals(object obj) => obj is FormFlowInstanceId x && x.Equals(this);
 
         public override int GetHashCode() => _id.GetHashCode();
 
         public override string ToString() => _id;
 
-        public static bool operator ==(InstanceId left, InstanceId right) => left.Equals(right);
+        public static bool operator ==(FormFlowInstanceId left, FormFlowInstanceId right) => left.Equals(right);
 
-        public static bool operator !=(InstanceId left, InstanceId right) => !(left == right);
+        public static bool operator !=(FormFlowInstanceId left, FormFlowInstanceId right) => !(left == right);
 
-        public static implicit operator string(InstanceId instanceId) => instanceId.ToString();
+        public static implicit operator string(FormFlowInstanceId instanceId) => instanceId.ToString();
     }
 }

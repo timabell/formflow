@@ -4,11 +4,11 @@ namespace FormFlow
 {
     public class FormFlowInstanceFeature
     {
-        public FormFlowInstanceFeature(Instance instance)
+        public FormFlowInstanceFeature(FormFlowInstance instance)
         {
             Instance = instance ?? throw new ArgumentNullException(nameof(instance));
         }
 
-        public Instance Instance { get; }
+        public FormFlowInstance Instance { get; }
     }
 }

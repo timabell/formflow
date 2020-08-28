@@ -12,7 +12,7 @@ using Xunit;
 
 namespace FormFlow.Tests
 {
-    public class InstanceFactoryTests
+    public class FormFlowInstanceFactoryTests
     {
         [Fact]
         public async Task CreateInstance_StateTypeDoesNotMatchDescriptor_ThrowsInvalidOperationException()
@@ -35,7 +35,7 @@ namespace FormFlow.Tests
 
             var stateProvider = new Mock<IInstanceStateProvider>();
 
-            var instanceFactory = new InstanceFactory(flowDescriptor, actionContext, stateProvider.Object);
+            var instanceFactory = new FormFlowInstanceFactory(flowDescriptor, actionContext, stateProvider.Object);
 
             // Act & Assert
             await Assert.ThrowsAsync<InvalidOperationException>(
@@ -62,7 +62,7 @@ namespace FormFlow.Tests
 
             var stateProvider = new InMemoryInstanceStateProvider();
 
-            var instanceFactory = new InstanceFactory(flowDescriptor, actionContext, stateProvider);
+            var instanceFactory = new FormFlowInstanceFactory(flowDescriptor, actionContext, stateProvider);
 
             var state = new TestState();
             var properties = new Dictionary<object, object>()
@@ -112,7 +112,7 @@ namespace FormFlow.Tests
 
             var stateProvider = new InMemoryInstanceStateProvider();
 
-            var instanceFactory = new InstanceFactory(flowDescriptor, actionContext, stateProvider);
+            var instanceFactory = new FormFlowInstanceFactory(flowDescriptor, actionContext, stateProvider);
 
             var state = new TestState();
 

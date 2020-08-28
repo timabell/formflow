@@ -16,9 +16,9 @@ namespace FormFlow.Tests
 
         public void Clear() => _instances.Clear();
 
-        public Task<Instance> CreateInstance(
+        public Task<FormFlowInstance> CreateInstance(
             string key,
-            InstanceId instanceId,
+            FormFlowInstanceId instanceId,
             Type stateType,
             object state,
             IReadOnlyDictionary<object, object> properties)
@@ -31,7 +31,7 @@ namespace FormFlow.Tests
                 Properties = properties
             });
 
-            var instance = Instance.Create(
+            var instance = FormFlowInstance.Create(
                 this,
                 key,
                 instanceId,
@@ -42,25 +42,25 @@ namespace FormFlow.Tests
             return Task.FromResult(instance);
         }
 
-        public Task DeleteInstance(InstanceId instanceId)
+        public Task DeleteInstance(FormFlowInstanceId instanceId)
         {
             _instances.Remove(instanceId);
 
             return Task.CompletedTask;
         }
 
-        public Task<Instance> GetInstance(InstanceId instanceId)
+        public Task<FormFlowInstance> GetInstance(FormFlowInstanceId instanceId)
         {
             _instances.TryGetValue(instanceId, out var entry);
 
             var instance = entry != null ?
-                Instance.Create(this, entry.Key, instanceId, entry.StateType, entry.State, entry.Properties) :
+                FormFlowInstance.Create(this, entry.Key, instanceId, entry.StateType, entry.State, entry.Properties) :
                 null;
 
             return Task.FromResult(instance);
         }
 
-        public Task UpdateInstanceState(InstanceId instanceId, object state)
+        public Task UpdateInstanceState(FormFlowInstanceId instanceId, object state)
         {
             _instances[instanceId].State = state;
 

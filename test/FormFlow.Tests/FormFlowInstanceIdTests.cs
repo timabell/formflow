@@ -7,7 +7,7 @@ using Xunit;
 
 namespace FormFlow.Tests
 {
-    public class InstanceIdTests
+    public class FormFlowInstanceIdTests
     {
         [Fact]
         public void TryResolve_RandomIdGenerationSourceMissingQueryParameter_ReturnsFalse()
@@ -28,7 +28,7 @@ namespace FormFlow.Tests
             var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
 
             // Act
-            var created = InstanceId.TryResolve(actionContext, flowDescriptor, out var instanceId);
+            var created = FormFlowInstanceId.TryResolve(actionContext, flowDescriptor, out var instanceId);
 
             // Assert
             Assert.False(created);
@@ -54,7 +54,7 @@ namespace FormFlow.Tests
             var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
 
             // Act
-            var created = InstanceId.TryResolve(actionContext, flowDescriptor, out var instanceId);
+            var created = FormFlowInstanceId.TryResolve(actionContext, flowDescriptor, out var instanceId);
 
             // Assert
             Assert.True(created);
@@ -84,7 +84,7 @@ namespace FormFlow.Tests
             var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
 
             // Act
-            var created = InstanceId.TryResolve(actionContext, flowDescriptor, out var instanceId);
+            var created = FormFlowInstanceId.TryResolve(actionContext, flowDescriptor, out var instanceId);
 
             // Assert
             Assert.False(created);
@@ -114,7 +114,7 @@ namespace FormFlow.Tests
             var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
 
             // Act
-            var created = InstanceId.TryResolve(actionContext, flowDescriptor, out var instanceId);
+            var created = FormFlowInstanceId.TryResolve(actionContext, flowDescriptor, out var instanceId);
 
             // Assert
             Assert.True(created);

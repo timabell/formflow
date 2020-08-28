@@ -12,7 +12,7 @@ using Xunit;
 
 namespace FormFlow.Tests
 {
-    public class InstanceLoaderTests
+    public class FormFlowInstanceLoaderTests
     {
         [Fact]
         public async Task Resolve_ActionDescriptorHasNoFormFlowActionDescriptor_ReturnsNull()
@@ -20,9 +20,9 @@ namespace FormFlow.Tests
             // Arrange
             var stateProvider = new Mock<IInstanceStateProvider>();
 
-            var instanceResolver = new InstanceLoader(
+            var instanceResolver = new FormFlowInstanceLoader(
                 stateProvider.Object,
-                NullLogger<InstanceLoader>.Instance);
+                NullLogger<FormFlowInstanceLoader>.Instance);
 
             var httpContext = new DefaultHttpContext();
             var routeData = new RouteData();
@@ -42,18 +42,18 @@ namespace FormFlow.Tests
         {
             // Arrange
             var key = "test-flow";
-            var instanceId = new InstanceId("the-instance", new RouteValueDictionary());
+            var instanceId = new FormFlowInstanceId("the-instance", new RouteValueDictionary());
             var stateType = typeof(TestState);
             var state = new TestState();
 
             var stateProvider = new Mock<IInstanceStateProvider>();
             stateProvider
                 .Setup(s => s.GetInstance(instanceId))
-                .ReturnsAsync(Instance.Create(stateProvider.Object, key, instanceId, stateType, state, properties: new Dictionary<object, object>()));
+                .ReturnsAsync(FormFlowInstance.Create(stateProvider.Object, key, instanceId, stateType, state, properties: new Dictionary<object, object>()));
 
-            var instanceResolver = new InstanceLoader(
+            var instanceResolver = new FormFlowInstanceLoader(
                 stateProvider.Object,
-                NullLogger<InstanceLoader>.Instance);
+                NullLogger<FormFlowInstanceLoader>.Instance);
 
             var httpContext = new DefaultHttpContext();
             httpContext.Request.QueryString = new QueryString($"?");
@@ -82,9 +82,9 @@ namespace FormFlow.Tests
 
             var stateProvider = new Mock<IInstanceStateProvider>();
 
-            var instanceResolver = new InstanceLoader(
+            var instanceResolver = new FormFlowInstanceLoader(
                 stateProvider.Object,
-                NullLogger<InstanceLoader>.Instance);
+                NullLogger<FormFlowInstanceLoader>.Instance);
 
             var httpContext = new DefaultHttpContext();
             httpContext.Request.QueryString = new QueryString($"?ffiid={instanceId}");
@@ -111,18 +111,18 @@ namespace FormFlow.Tests
         {
             // Arrange
             var key = "test-flow";
-            var instanceId = new InstanceId("the-instance", new RouteValueDictionary());
+            var instanceId = new FormFlowInstanceId("the-instance", new RouteValueDictionary());
             var stateType = typeof(TestState);
             var state = new TestState();
 
             var stateProvider = new Mock<IInstanceStateProvider>();
             stateProvider
                 .Setup(s => s.GetInstance(instanceId))
-                .ReturnsAsync(Instance.Create(stateProvider.Object, key, instanceId, stateType, state, properties: new Dictionary<object, object>()));
+                .ReturnsAsync(FormFlowInstance.Create(stateProvider.Object, key, instanceId, stateType, state, properties: new Dictionary<object, object>()));
 
-            var instanceResolver = new InstanceLoader(
+            var instanceResolver = new FormFlowInstanceLoader(
                 stateProvider.Object,
-                NullLogger<InstanceLoader>.Instance);
+                NullLogger<FormFlowInstanceLoader>.Instance);
 
             var httpContext = new DefaultHttpContext();
             httpContext.Request.QueryString = new QueryString($"?ffiid={instanceId}");
@@ -149,18 +149,18 @@ namespace FormFlow.Tests
         {
             // Arrange
             var key = "test-flow";
-            var instanceId = new InstanceId("the-instance", new RouteValueDictionary());
+            var instanceId = new FormFlowInstanceId("the-instance", new RouteValueDictionary());
             var stateType = typeof(TestState);
             var state = new TestState();
 
             var stateProvider = new Mock<IInstanceStateProvider>();
             stateProvider
                 .Setup(s => s.GetInstance(instanceId))
-                .ReturnsAsync(Instance.Create(stateProvider.Object, key, instanceId, stateType, state, properties: new Dictionary<object, object>()));
+                .ReturnsAsync(FormFlowInstance.Create(stateProvider.Object, key, instanceId, stateType, state, properties: new Dictionary<object, object>()));
 
-            var instanceResolver = new InstanceLoader(
+            var instanceResolver = new FormFlowInstanceLoader(
                 stateProvider.Object,
-                NullLogger<InstanceLoader>.Instance);
+                NullLogger<FormFlowInstanceLoader>.Instance);
 
             var httpContext = new DefaultHttpContext();
             httpContext.Request.QueryString = new QueryString($"?ffiid={instanceId}");
@@ -187,18 +187,18 @@ namespace FormFlow.Tests
         {
             // Arrange
             var key = "test-flow";
-            var instanceId = new InstanceId("the-instance", new RouteValueDictionary());
+            var instanceId = new FormFlowInstanceId("the-instance", new RouteValueDictionary());
             var stateType = typeof(TestState);
             var state = new TestState();
             
             var stateProvider = new Mock<IInstanceStateProvider>();
             stateProvider
                 .Setup(s => s.GetInstance(instanceId))
-                .ReturnsAsync(Instance.Create(stateProvider.Object, key, instanceId, stateType, state, properties: new Dictionary<object, object>()));
+                .ReturnsAsync(FormFlowInstance.Create(stateProvider.Object, key, instanceId, stateType, state, properties: new Dictionary<object, object>()));
 
-            var instanceResolver = new InstanceLoader(
+            var instanceResolver = new FormFlowInstanceLoader(
                 stateProvider.Object,
-                NullLogger<InstanceLoader>.Instance);
+                NullLogger<FormFlowInstanceLoader>.Instance);
 
             var httpContext = new DefaultHttpContext();
             httpContext.Request.QueryString = new QueryString($"?ffiid={instanceId}");

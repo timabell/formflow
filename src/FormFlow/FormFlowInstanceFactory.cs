@@ -7,13 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FormFlow
 {
-    public class InstanceFactory
+    public class FormFlowInstanceFactory
     {
         private readonly FormFlowDescriptor _flowDescriptor;
         private readonly ActionContext _actionContext;
         private readonly IInstanceStateProvider _stateProvider;
 
-        public InstanceFactory(
+        public FormFlowInstanceFactory(
             FormFlowDescriptor flowDescriptor,
             ActionContext actionContext,
             IInstanceStateProvider stateProvider)
@@ -38,7 +38,7 @@ namespace FormFlow
                     $"{typeof(TState).Name} is not compatible with {_flowDescriptor.StateType.Name}.");
             }
 
-            var instanceId = InstanceId.Generate(_actionContext, _flowDescriptor);
+            var instanceId = FormFlowInstanceId.Generate(_actionContext, _flowDescriptor);
 
             return (Instance<TState>)await _stateProvider.CreateInstance(
                 _flowDescriptor.Key,

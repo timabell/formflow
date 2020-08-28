@@ -8,18 +8,18 @@ using Microsoft.Extensions.Logging;
 
 namespace FormFlow
 {
-    public class InstanceLoader
+    public class FormFlowInstanceLoader
     {
         private readonly IInstanceStateProvider _stateProvider;
-        private readonly ILogger<InstanceLoader> _logger;
+        private readonly ILogger<FormFlowInstanceLoader> _logger;
 
-        public InstanceLoader(IInstanceStateProvider stateProvider, ILogger<InstanceLoader> logger)
+        public FormFlowInstanceLoader(IInstanceStateProvider stateProvider, ILogger<FormFlowInstanceLoader> logger)
         {
             _stateProvider = stateProvider ?? throw new ArgumentNullException(nameof(stateProvider));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<Instance> Resolve(ActionContext actionContext)
+        public async Task<FormFlowInstance> Resolve(ActionContext actionContext)
         {
             if (actionContext == null)
             {
@@ -39,7 +39,7 @@ namespace FormFlow
                 return null;
             }
 
-            if (!InstanceId.TryResolve(actionContext, flowDescriptor, out var instanceId))
+            if (!FormFlowInstanceId.TryResolve(actionContext, flowDescriptor, out var instanceId))
             {
                 _logger.LogWarning(
                     "Failed to extract ID from request.\n" +

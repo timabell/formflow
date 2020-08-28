@@ -5,15 +5,15 @@ using FormFlow.State;
 
 namespace FormFlow
 {
-    public class Instance
+    public class FormFlowInstance
     {
         private readonly IInstanceStateProvider _stateProvider;
         private bool _isDeleted;
 
-        private protected Instance(
+        private protected FormFlowInstance(
             IInstanceStateProvider stateProvider,
             string key,
-            InstanceId instanceId,
+            FormFlowInstanceId instanceId,
             Type stateType,
             object state,
             IReadOnlyDictionary<object, object> properties)
@@ -28,7 +28,7 @@ namespace FormFlow
 
         public string Key { get; }
 
-        public InstanceId InstanceId { get; }
+        public FormFlowInstanceId InstanceId { get; }
 
         public IReadOnlyDictionary<object, object> Properties { get; }
 
@@ -36,16 +36,16 @@ namespace FormFlow
 
         public Type StateType { get; }
 
-        public static Instance Create(
+        public static FormFlowInstance Create(
             IInstanceStateProvider stateProvider,
             string key,
-            InstanceId instanceId,
+            FormFlowInstanceId instanceId,
             Type stateType,
             object state,
             IReadOnlyDictionary<object, object> properties)
         {
             var genericType = typeof(Instance<>).MakeGenericType(stateType);
-            return (Instance)Activator.CreateInstance(genericType, stateProvider, key, instanceId, state, properties);
+            return (FormFlowInstance)Activator.CreateInstance(genericType, stateProvider, key, instanceId, state, properties);
         }
 
         public async Task Delete()
@@ -81,12 +81,12 @@ namespace FormFlow
         }
     }
 
-    public sealed class Instance<TState> : Instance
+    public sealed class Instance<TState> : FormFlowInstance
     {
         public Instance(
             IInstanceStateProvider stateProvider,
             string key,
-            InstanceId instanceId,
+            FormFlowInstanceId instanceId,
             TState state,
             IReadOnlyDictionary<object, object> properties)
             : base(stateProvider, key, instanceId, typeof(TState), state, properties)

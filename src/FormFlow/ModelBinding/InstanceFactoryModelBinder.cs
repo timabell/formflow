@@ -18,7 +18,7 @@ namespace FormFlow.ModelBinding
 
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
-            if (bindingContext.ModelType != typeof(InstanceFactory))
+            if (bindingContext.ModelType != typeof(FormFlowInstanceFactory))
             {
                 return Task.CompletedTask;
             }
@@ -29,7 +29,7 @@ namespace FormFlow.ModelBinding
                 return Task.CompletedTask;
             }
 
-            var instanceFactory = new InstanceFactory(flowDescriptor, bindingContext.ActionContext, _stateProvider);
+            var instanceFactory = new FormFlowInstanceFactory(flowDescriptor, bindingContext.ActionContext, _stateProvider);
             bindingContext.Result = ModelBindingResult.Success(instanceFactory);
 
             return Task.CompletedTask;

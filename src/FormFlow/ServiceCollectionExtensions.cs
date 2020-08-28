@@ -15,7 +15,7 @@ namespace FormFlow
             }
 
             services.AddHttpContextAccessor();
-            services.AddSingleton<InstanceProvider>();
+            services.AddSingleton<FormFlowInstanceProvider>();
             services.TryAddSingleton<IInstanceStateProvider, SessionInstanceStateProvider>();
 
             return services;
