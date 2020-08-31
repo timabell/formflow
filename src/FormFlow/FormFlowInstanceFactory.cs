@@ -42,11 +42,16 @@ namespace FormFlow
                 _actionContext.RouteData,
                 _flowDescriptor);
 
-            return (FormFlowInstance<TState>)_stateProvider.CreateInstance(
+            var instance = (FormFlowInstance<TState>)_stateProvider.CreateInstance(
                 _flowDescriptor.Key,
                 instanceId,
                 _flowDescriptor.StateType,
                 state, properties);
+
+            // REVIEW: Use FormFlowInstanceProvider here?
+            _actionContext.HttpContext.Features.Set(new FormFlowInstanceFeature(instance));
+
+            return instance;
         }
     }
 }

@@ -81,6 +81,10 @@ namespace FormFlow.Tests
             Assert.Equal(2, instance.Properties.Count);
             Assert.Equal(42, instance.Properties["foo"]);
             Assert.Equal("baz", instance.Properties["bar"]);
+
+            var feature = httpContext.Features.Get<FormFlowInstanceFeature>();
+            Assert.NotNull(feature);
+            Assert.Same(instance, feature.Instance);
         }
 
         [Fact]
