@@ -58,6 +58,17 @@ namespace FormFlow
             _isDeleted = true;
         }
 
+        internal static bool IsFormFlowInstanceType(Type type)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            return type == typeof(FormFlowInstance) ||
+                (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(FormFlowInstance<>));
+        }
+
         protected void UpdateState(object state)
         {
             if (state == null)

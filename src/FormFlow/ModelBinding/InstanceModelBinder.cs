@@ -18,8 +18,7 @@ namespace FormFlow.ModelBinding
 
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
-            if (bindingContext.ModelType != typeof(FormFlowInstance) &&
-                !(bindingContext.ModelType.IsGenericType && bindingContext.ModelType.GetGenericTypeDefinition() == typeof(FormFlowInstance<>)))
+            if (!FormFlowInstance.IsFormFlowInstanceType(bindingContext.ModelType))
             {
                 return Task.CompletedTask;
             }
