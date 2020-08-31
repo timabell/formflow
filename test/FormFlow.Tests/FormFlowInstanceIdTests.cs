@@ -21,7 +21,7 @@ namespace FormFlow.Tests
             var routeData = new RouteData();
 
             // Act
-            var created = FormFlowInstanceId.TryResolve(httpContext.Request, routeData, flowDescriptor, out var instanceId);
+            var created = FormFlowInstanceId.TryResolve(flowDescriptor, httpContext.Request, routeData, out var instanceId);
 
             // Assert
             Assert.False(created);
@@ -42,7 +42,7 @@ namespace FormFlow.Tests
             var routeData = new RouteData();
 
             // Act
-            var created = FormFlowInstanceId.TryResolve(httpContext.Request, routeData, flowDescriptor, out var instanceId);
+            var created = FormFlowInstanceId.TryResolve(flowDescriptor, httpContext.Request, routeData, out var instanceId);
 
             // Assert
             Assert.True(created);
@@ -67,7 +67,7 @@ namespace FormFlow.Tests
             });
 
             // Act
-            var created = FormFlowInstanceId.TryResolve(httpContext.Request, routeData, flowDescriptor, out var instanceId);
+            var created = FormFlowInstanceId.TryResolve(flowDescriptor, httpContext.Request, routeData, out var instanceId);
 
             // Assert
             Assert.False(created);
@@ -92,7 +92,7 @@ namespace FormFlow.Tests
             });
 
             // Act
-            var created = FormFlowInstanceId.TryResolve(httpContext.Request, routeData, flowDescriptor, out var instanceId);
+            var created = FormFlowInstanceId.TryResolve(flowDescriptor, httpContext.Request, routeData, out var instanceId);
 
             // Assert
             Assert.True(created);

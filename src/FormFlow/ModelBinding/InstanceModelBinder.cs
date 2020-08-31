@@ -30,9 +30,9 @@ namespace FormFlow.ModelBinding
             }
 
             if (!FormFlowInstanceId.TryResolve(
+                flowDescriptor,
                 bindingContext.ActionContext.HttpContext.Request,
                 bindingContext.ActionContext.RouteData,
-                flowDescriptor,
                 out var instanceId))
             {
                 return Task.CompletedTask;

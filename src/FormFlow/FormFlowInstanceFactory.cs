@@ -39,9 +39,9 @@ namespace FormFlow
             }
 
             var instanceId = FormFlowInstanceId.Generate(
+                _flowDescriptor,
                 _actionContext.HttpContext.Request,
-                _actionContext.RouteData,
-                _flowDescriptor);
+                _actionContext.RouteData);
 
             var instance = (FormFlowInstance<TState>)_stateProvider.CreateInstance(
                 _flowDescriptor.Key,
