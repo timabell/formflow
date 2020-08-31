@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using FormFlow.Metadata;
 using FormFlow.State;
-using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace FormFlow.ModelBinding
@@ -23,28 +21,14 @@ namespace FormFlow.ModelBinding
                 return Task.CompletedTask;
             }
 
-            var flowDescriptor = bindingContext.ActionContext.ActionDescriptor.GetProperty<FormFlowDescriptor>();
-            if (flowDescriptor == null)
+            var resolver = new InstanceResolver(_stateProvider);
+            var instance = resolver.Resolve(bindingContext.ActionContext);
+
+            if (instance != null)
             {
-                return Task.CompletedTask;
+                bindingContext.Result = ModelBindingResult.Success(instance);
             }
 
-            if (!FormFlowInstanceId.TryResolve(
-                flowDescriptor,
-                bindingContext.ActionContext.HttpContext.Request,
-                bindingContext.ActionContext.RouteData,
-                out var instanceId))
-            {
-                return Task.CompletedTask;
-            }
-
-            var instance = _stateProvider.GetInstance(instanceId);
-            if (instance == null)
-            {
-                return Task.CompletedTask;
-            }
-
-            bindingContext.Result = ModelBindingResult.Success(instance);
             return Task.CompletedTask;
         }
     }
