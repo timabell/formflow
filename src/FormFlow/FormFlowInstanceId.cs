@@ -47,36 +47,11 @@ namespace FormFlow
             }
             else if (flowDescriptor.IdGenerationSource == IdGenerationSource.RouteValues)
             {
-                return GenerateForRouteValues();
+                return GenerateForRouteValues(httpRequest, routeData, flowDescriptor);
             }
             else
             {
                 throw new NotSupportedException($"Unknown IdGenerationSource: '{flowDescriptor.IdGenerationSource}'.");
-            }
-
-            FormFlowInstanceId GenerateForRandomId()
-            {
-                // Always generate a new ID, even if incoming routeValues have an existing one
-                var id = Guid.NewGuid().ToString();
-
-                return new FormFlowInstanceId(
-                    id,
-                    new RouteValueDictionary()
-                    {
-                        { Constants.InstanceIdQueryParameterName, id }
-                    });
-            }
-
-            FormFlowInstanceId GenerateForRouteValues()
-            {
-                if (!TryResolve(httpRequest, routeData, flowDescriptor, out var instanceId))
-                {
-                    var routeParameterNameList = string.Join(", ", flowDescriptor.IdRouteParameterNames);
-                    throw new InvalidOperationException(
-                        $"One or more route parameters are missing. Flow requires: {routeParameterNameList}.");
-                }
-
-                return instanceId;
             }
         }
 
@@ -103,62 +78,15 @@ namespace FormFlow
 
             if (flowDescriptor.IdGenerationSource == IdGenerationSource.RandomId)
             {
-                return TryCreateForRandomId(out instanceId);
+                return TryResolveForRandomId(httpRequest, out instanceId);
             }
             else if (flowDescriptor.IdGenerationSource == IdGenerationSource.RouteValues)
             {
-                return TryCreateForRouteValues(out instanceId);
+                return TryResolveForRouteValues(flowDescriptor, routeData, out instanceId);
             }
             else
             {
                 throw new NotSupportedException($"Unknown IdGenerationSource: '{flowDescriptor.IdGenerationSource}'.");
-            }
-
-            bool TryCreateForRandomId(out FormFlowInstanceId instanceId)
-            {
-                var id = httpRequest.HttpContext.Request.Query[Constants.InstanceIdQueryParameterName].ToString();
-
-                if (string.IsNullOrEmpty(id))
-                {
-                    instanceId = default;
-                    return false;
-                }
-
-                instanceId = new FormFlowInstanceId(
-                    id,
-                    new RouteValueDictionary()
-                    {
-                        { Constants.InstanceIdQueryParameterName, id }
-                    });
-
-                return true;
-            }
-
-            bool TryCreateForRouteValues(out FormFlowInstanceId instanceId)
-            {
-                var urlEncoder = UrlEncoder.Default;
-
-                var routeValues = routeData.Values;
-
-                var id = urlEncoder.Encode(flowDescriptor.Key);
-                var instanceRouteValues = new RouteValueDictionary();
-
-                foreach (var routeParam in flowDescriptor.IdRouteParameterNames)
-                {
-                    var routeValue = routeValues[routeParam]?.ToString();
-
-                    if (string.IsNullOrEmpty(routeValue))
-                    {
-                        instanceId = default;
-                        return false;
-                    }
-
-                    id = QueryHelpers.AddQueryString(id, routeParam, routeValue);
-                    instanceRouteValues.Add(routeParam, routeValue);
-                }
-
-                instanceId = new FormFlowInstanceId(id, instanceRouteValues);
-                return true;
             }
         }
 
@@ -175,5 +103,100 @@ namespace FormFlow
         public static bool operator !=(FormFlowInstanceId left, FormFlowInstanceId right) => !(left == right);
 
         public static implicit operator string(FormFlowInstanceId instanceId) => instanceId.ToString();
+
+        internal static FormFlowInstanceId GenerateForRandomId()
+        {
+            // Always generate a new ID, even if incoming routeValues have an existing one
+            var id = Guid.NewGuid().ToString();
+
+            return new FormFlowInstanceId(
+                id,
+                new RouteValueDictionary()
+                {
+                        { Constants.InstanceIdQueryParameterName, id }
+                });
+        }
+
+        internal static FormFlowInstanceId GenerateForRouteValues(
+            HttpRequest httpRequest,
+            RouteData routeData,
+            FormFlowDescriptor flowDescriptor)
+        {
+            if (!TryResolve(httpRequest, routeData, flowDescriptor, out var instanceId))
+            {
+                var routeParameterNameList = string.Join(", ", flowDescriptor.IdRouteParameterNames);
+                throw new InvalidOperationException(
+                    $"One or more route parameters are missing. Flow requires: {routeParameterNameList}.");
+            }
+
+            return instanceId;
+        }
+
+        internal static bool TryResolveForRandomId(
+            HttpRequest httpRequest,
+            out FormFlowInstanceId instanceId)
+        {
+            if (httpRequest == null)
+            {
+                throw new ArgumentNullException(nameof(httpRequest));
+            }
+
+            var id = httpRequest.HttpContext.Request.Query[Constants.InstanceIdQueryParameterName].ToString();
+
+            if (string.IsNullOrEmpty(id))
+            {
+                instanceId = default;
+                return false;
+            }
+
+            instanceId = new FormFlowInstanceId(
+                id,
+                new RouteValueDictionary()
+                {
+                    { Constants.InstanceIdQueryParameterName, id }
+                });
+
+            return true;
+        }
+
+        internal static bool TryResolveForRouteValues(
+            FormFlowDescriptor flowDescriptor,
+            RouteData routeData,
+            out FormFlowInstanceId instanceId)
+        {
+            if (flowDescriptor == null)
+            {
+                throw new ArgumentNullException(nameof(flowDescriptor));
+            }
+
+            if (routeData == null)
+            {
+                throw new ArgumentNullException(nameof(routeData));
+            }
+
+            var urlEncoder = UrlEncoder.Default;
+
+            var routeValues = routeData.Values;
+
+            var id = urlEncoder.Encode(flowDescriptor.Key);
+            var instanceRouteValues = new RouteValueDictionary();
+
+            foreach (var routeParam in flowDescriptor.IdRouteParameterNames)
+            {
+                var routeValue = routeValues[routeParam]?.ToString();
+
+                if (string.IsNullOrEmpty(routeValue))
+                {
+                    instanceId = default;
+                    return false;
+                }
+
+                id = QueryHelpers.AddQueryString(id, routeParam, routeValue);
+                instanceRouteValues.Add(routeParam, routeValue);
+            }
+
+            instanceId = new FormFlowInstanceId(id, instanceRouteValues);
+            return true;
+        }
     }
 }
