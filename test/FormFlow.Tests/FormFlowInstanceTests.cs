@@ -27,10 +27,10 @@ namespace FormFlow.Tests
             var newState = new MyState();
 
             // Act
-            instance.Delete();
+            instance.Complete();
 
             // Assert
-            stateProvider.Verify(mock => mock.DeleteInstance(instanceId));
+            stateProvider.Verify(mock => mock.CompleteInstance(instanceId));
         }
 
         [Fact]
@@ -51,7 +51,7 @@ namespace FormFlow.Tests
 
             var newState = new MyState();
 
-            instance.Delete();
+            instance.Complete();
 
             // Act & Assert
             Assert.Throws<InvalidOperationException>(() => instance.UpdateState(newState));

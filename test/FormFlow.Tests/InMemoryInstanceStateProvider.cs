@@ -41,7 +41,7 @@ namespace FormFlow.Tests
             return instance;
         }
 
-        public void DeleteInstance(FormFlowInstanceId instanceId)
+        public void CompleteInstance(FormFlowInstanceId instanceId)
         {
             _instances.Remove(instanceId);
         }

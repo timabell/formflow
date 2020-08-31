@@ -7,7 +7,6 @@ namespace FormFlow
     public class FormFlowInstance
     {
         private readonly IInstanceStateProvider _stateProvider;
-        private bool _isDeleted;
 
         private protected FormFlowInstance(
             IInstanceStateProvider stateProvider,
@@ -15,7 +14,8 @@ namespace FormFlow
             FormFlowInstanceId instanceId,
             Type stateType,
             object state,
-            IReadOnlyDictionary<object, object> properties)
+            IReadOnlyDictionary<object, object> properties,
+            bool completed = false)
         {
             _stateProvider = stateProvider ?? throw new ArgumentNullException(nameof(stateProvider));
             Key = key ?? throw new ArgumentNullException(nameof(key));
@@ -23,7 +23,10 @@ namespace FormFlow
             InstanceId = instanceId;
             Properties = properties ?? throw new ArgumentNullException(nameof(properties));
             State = state ?? throw new ArgumentNullException(nameof(state));
+            Completed = completed;
         }
+
+        public bool Completed { get; private set; }
 
         public string Key { get; }
 
@@ -41,21 +44,30 @@ namespace FormFlow
             FormFlowInstanceId instanceId,
             Type stateType,
             object state,
-            IReadOnlyDictionary<object, object> properties)
+            IReadOnlyDictionary<object, object> properties,
+            bool completed = false)
         {
             var genericType = typeof(FormFlowInstance<>).MakeGenericType(stateType);
-            return (FormFlowInstance)Activator.CreateInstance(genericType, stateProvider, key, instanceId, state, properties);
+
+            return (FormFlowInstance)Activator.CreateInstance(
+                genericType,
+                stateProvider,
+                key,
+                instanceId,
+                state,
+                properties,
+                completed);
         }
 
-        public void Delete()
+        public void Complete()
         {
-            if (_isDeleted)
+            if (Completed)
             {
                 return;
             }
 
-            _stateProvider.DeleteInstance(InstanceId);
-            _isDeleted = true;
+            _stateProvider.CompleteInstance(InstanceId);
+            Completed = true;
         }
 
         internal static bool IsFormFlowInstanceType(Type type)
@@ -81,9 +93,9 @@ namespace FormFlow
                 throw new ArgumentException($"State must be type: '{StateType.FullName}'.", nameof(state));
             }
 
-            if (_isDeleted)
+            if (Completed)
             {
-                throw new InvalidOperationException("Instance has been deleted.");
+                throw new InvalidOperationException("Instance has been completed.");
             }
 
             _stateProvider.UpdateInstanceState(InstanceId, state);
@@ -98,8 +110,9 @@ namespace FormFlow
             string key,
             FormFlowInstanceId instanceId,
             TState state,
-            IReadOnlyDictionary<object, object> properties)
-            : base(stateProvider, key, instanceId, typeof(TState), state, properties)
+            IReadOnlyDictionary<object, object> properties,
+            bool completed = false)
+            : base(stateProvider, key, instanceId, typeof(TState), state, properties, completed)
         {
         }
 

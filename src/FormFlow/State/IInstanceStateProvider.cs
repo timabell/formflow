@@ -5,14 +5,14 @@ namespace FormFlow.State
 {
     public interface IInstanceStateProvider
     {
+        void CompleteInstance(FormFlowInstanceId instanceId);
+
         FormFlowInstance CreateInstance(
             string key,
             FormFlowInstanceId instanceId,
             Type stateType,
             object state,
             IReadOnlyDictionary<object, object> properties);
-
-        void DeleteInstance(FormFlowInstanceId instanceId);
 
         FormFlowInstance GetInstance(FormFlowInstanceId instanceId);
 

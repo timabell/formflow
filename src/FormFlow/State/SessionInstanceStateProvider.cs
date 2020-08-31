@@ -46,7 +46,8 @@ namespace FormFlow.State
                 Key = key,
                 StateTypeAssemblyQualifiedName = stateType.AssemblyQualifiedName,
                 State = state,
-                Properties = properties
+                Properties = properties,
+                Completed = false
             };
             var serialized = _stateSerializer.Serialize(entry);
 
@@ -57,12 +58,24 @@ namespace FormFlow.State
             return FormFlowInstance.Create(this, key, instanceId, stateType, state, properties);
         }
 
-        public void DeleteInstance(FormFlowInstanceId instanceId)
+        public void CompleteInstance(FormFlowInstanceId instanceId)
         {
             var session = _httpContextAccessor.HttpContext.Session;
             var sessionKey = GetSessionKeyForInstance(instanceId);
 
-            session.Remove(sessionKey);
+            if (session.TryGetValue(sessionKey, out var serialized))
+            {
+                var entry = (SessionEntry)_stateSerializer.Deserialize(serialized);
+
+                entry.Completed = true;
+
+                var updateSerialized = _stateSerializer.Serialize(entry);
+                session.Set(sessionKey, updateSerialized);
+            }
+            else
+            {
+                throw new ArgumentException("Instance does not exist.", nameof(instanceId));
+            }
         }
 
         public FormFlowInstance GetInstance(FormFlowInstanceId instanceId)
@@ -82,7 +95,8 @@ namespace FormFlow.State
                     instanceId,
                     stateType,
                     entry.State,
-                    entry.Properties);
+                    entry.Properties,
+                    entry.Completed);
             }
             else
             {
@@ -120,6 +134,7 @@ namespace FormFlow.State
             public string StateTypeAssemblyQualifiedName { get; set; }
             public object State { get; set; }
             public IReadOnlyDictionary<object, object> Properties { get; set; }
+            public bool Completed { get; set; }
         }
     }
 }
