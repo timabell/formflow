@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FormFlow.Metadata;
 using FormFlow.State;
 using Microsoft.AspNetCore.Mvc;
@@ -52,6 +53,60 @@ namespace FormFlow
             _actionContext.HttpContext.Features.Set(new FormFlowInstanceFeature(instance));
 
             return instance;
+        }
+
+        public FormFlowInstance<TState> GetOrCreateInstance<TState>(
+            Func<TState> createState,
+            IReadOnlyDictionary<object, object> properties = null)
+        {
+            if (createState == null)
+            {
+                throw new ArgumentNullException(nameof(createState));
+            }
+
+            if (typeof(TState) != _flowDescriptor.StateType)
+            {
+                throw new InvalidOperationException(
+                    $"{typeof(TState).Name} is not compatible with {_flowDescriptor.StateType.Name}.");
+            }
+
+            // REVIEW: Use FormFlowInstanceProvider here?
+            var currentInstance = _actionContext.HttpContext.Features.Get<FormFlowInstanceFeature>()?.Instance;
+            if (currentInstance != null)
+            {
+                return (FormFlowInstance<TState>)currentInstance;
+            }
+
+            var newState = createState();
+
+            return CreateInstance(newState, properties);
+        }
+
+        public async Task<FormFlowInstance<TState>> GetOrCreateInstanceAsync<TState>(
+            Func<Task<TState>> createState,
+            IReadOnlyDictionary<object, object> properties = null)
+        {
+            if (createState == null)
+            {
+                throw new ArgumentNullException(nameof(createState));
+            }
+
+            if (typeof(TState) != _flowDescriptor.StateType)
+            {
+                throw new InvalidOperationException(
+                    $"{typeof(TState).Name} is not compatible with {_flowDescriptor.StateType.Name}.");
+            }
+
+            // REVIEW: Use FormFlowInstanceProvider here?
+            var currentInstance = _actionContext.HttpContext.Features.Get<FormFlowInstanceFeature>()?.Instance;
+            if (currentInstance != null)
+            {
+                return (FormFlowInstance<TState>)currentInstance;
+            }
+
+            var newState = await createState();
+
+            return CreateInstance(newState, properties);
         }
     }
 }
