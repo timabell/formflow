@@ -30,7 +30,11 @@ namespace FormFlow.ModelBinding
                 return;
             }
 
-            if (!FormFlowInstanceId.TryResolve(bindingContext.ActionContext, flowDescriptor, out var instanceId))
+            if (!FormFlowInstanceId.TryResolve(
+                bindingContext.ActionContext.HttpContext.Request,
+                bindingContext.ActionContext.RouteData,
+                flowDescriptor,
+                out var instanceId))
             {
                 return;
             }

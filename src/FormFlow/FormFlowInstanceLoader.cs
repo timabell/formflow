@@ -39,7 +39,11 @@ namespace FormFlow
                 return null;
             }
 
-            if (!FormFlowInstanceId.TryResolve(actionContext, flowDescriptor, out var instanceId))
+            if (!FormFlowInstanceId.TryResolve(
+                actionContext.HttpContext.Request,
+                actionContext.RouteData,
+                flowDescriptor,
+                out var instanceId))
             {
                 _logger.LogWarning(
                     "Failed to extract ID from request.\n" +

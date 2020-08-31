@@ -1,7 +1,5 @@
 ﻿using FormFlow.Metadata;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Routing;
 using Xunit;
 
@@ -22,13 +20,8 @@ namespace FormFlow.Tests
 
             var routeData = new RouteData();
 
-            var actionDescriptor = new ActionDescriptor();
-            actionDescriptor.SetProperty(flowDescriptor);
-
-            var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
-
             // Act
-            var created = FormFlowInstanceId.TryResolve(actionContext, flowDescriptor, out var instanceId);
+            var created = FormFlowInstanceId.TryResolve(httpContext.Request, routeData, flowDescriptor, out var instanceId);
 
             // Assert
             Assert.False(created);
@@ -48,13 +41,8 @@ namespace FormFlow.Tests
 
             var routeData = new RouteData();
 
-            var actionDescriptor = new ActionDescriptor();
-            actionDescriptor.SetProperty(flowDescriptor);
-
-            var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
-
             // Act
-            var created = FormFlowInstanceId.TryResolve(actionContext, flowDescriptor, out var instanceId);
+            var created = FormFlowInstanceId.TryResolve(httpContext.Request, routeData, flowDescriptor, out var instanceId);
 
             // Assert
             Assert.True(created);
@@ -78,13 +66,8 @@ namespace FormFlow.Tests
                 { "id1", "foo" }
             });
 
-            var actionDescriptor = new ActionDescriptor();
-            actionDescriptor.SetProperty(flowDescriptor);
-
-            var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
-
             // Act
-            var created = FormFlowInstanceId.TryResolve(actionContext, flowDescriptor, out var instanceId);
+            var created = FormFlowInstanceId.TryResolve(httpContext.Request, routeData, flowDescriptor, out var instanceId);
 
             // Assert
             Assert.False(created);
@@ -108,13 +91,8 @@ namespace FormFlow.Tests
                 { "id2", "bar" }
             });
 
-            var actionDescriptor = new ActionDescriptor();
-            actionDescriptor.SetProperty(flowDescriptor);
-
-            var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
-
             // Act
-            var created = FormFlowInstanceId.TryResolve(actionContext, flowDescriptor, out var instanceId);
+            var created = FormFlowInstanceId.TryResolve(httpContext.Request, routeData, flowDescriptor, out var instanceId);
 
             // Assert
             Assert.True(created);

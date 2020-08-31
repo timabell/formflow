@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Encodings.Web;
 using FormFlow.Metadata;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.WebUtilities;
 
@@ -22,12 +22,18 @@ namespace FormFlow
         public IReadOnlyDictionary<string, object> RouteValues { get; }
 
         public static FormFlowInstanceId Generate(
-            ActionContext actionContext,
+            HttpRequest httpRequest,
+            RouteData routeData,
             FormFlowDescriptor flowDescriptor)
         {
-            if (actionContext == null)
+            if (httpRequest == null)
             {
-                throw new ArgumentNullException(nameof(actionContext));
+                throw new ArgumentNullException(nameof(httpRequest));
+            }
+
+            if (routeData == null)
+            {
+                throw new ArgumentNullException(nameof(routeData));
             }
 
             if (flowDescriptor == null)
@@ -63,7 +69,7 @@ namespace FormFlow
 
             FormFlowInstanceId GenerateForRouteValues()
             {
-                if (!TryResolve(actionContext, flowDescriptor, out var instanceId))
+                if (!TryResolve(httpRequest, routeData, flowDescriptor, out var instanceId))
                 {
                     var routeParameterNameList = string.Join(", ", flowDescriptor.IdRouteParameterNames);
                     throw new InvalidOperationException(
@@ -75,13 +81,19 @@ namespace FormFlow
         }
 
         public static bool TryResolve(
-            ActionContext actionContext,
+            HttpRequest httpRequest,
+            RouteData routeData,
             FormFlowDescriptor flowDescriptor,
             out FormFlowInstanceId instanceId)
         {
-            if (actionContext == null)
+            if (httpRequest == null)
             {
-                throw new ArgumentNullException(nameof(actionContext));
+                throw new ArgumentNullException(nameof(httpRequest));
+            }
+
+            if (routeData == null)
+            {
+                throw new ArgumentNullException(nameof(routeData));
             }
 
             if (flowDescriptor == null)
@@ -104,7 +116,7 @@ namespace FormFlow
 
             bool TryCreateForRandomId(out FormFlowInstanceId instanceId)
             {
-                var id = actionContext.HttpContext.Request.Query[Constants.InstanceIdQueryParameterName].ToString();
+                var id = httpRequest.HttpContext.Request.Query[Constants.InstanceIdQueryParameterName].ToString();
 
                 if (string.IsNullOrEmpty(id))
                 {
@@ -126,7 +138,7 @@ namespace FormFlow
             {
                 var urlEncoder = UrlEncoder.Default;
 
-                var routeValues = actionContext.RouteData.Values;
+                var routeValues = routeData.Values;
 
                 var id = urlEncoder.Encode(flowDescriptor.Key);
                 var instanceRouteValues = new RouteValueDictionary();

@@ -38,7 +38,10 @@ namespace FormFlow
                     $"{typeof(TState).Name} is not compatible with {_flowDescriptor.StateType.Name}.");
             }
 
-            var instanceId = FormFlowInstanceId.Generate(_actionContext, _flowDescriptor);
+            var instanceId = FormFlowInstanceId.Generate(
+                _actionContext.HttpContext.Request,
+                _actionContext.RouteData,
+                _flowDescriptor);
 
             return (FormFlowInstance<TState>)await _stateProvider.CreateInstance(
                 _flowDescriptor.Key,
