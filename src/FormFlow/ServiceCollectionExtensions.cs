@@ -20,5 +20,25 @@ namespace FormFlow
 
             return services;
         }
+
+        public static IServiceCollection AddFormFlow(
+            this IServiceCollection services,
+            Action<FormFlowOptions> configure)
+        {
+            if (services == null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
+            if (configure == null)
+            {
+                throw new ArgumentNullException(nameof(configure));
+            }
+
+            services.Configure(configure);
+            services.AddFormFlow();
+
+            return services;
+        }
     }
 }
