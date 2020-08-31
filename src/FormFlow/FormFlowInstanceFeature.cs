@@ -2,7 +2,7 @@
 
 namespace FormFlow
 {
-    public class FormFlowInstanceFeature
+    internal class FormFlowInstanceFeature
     {
         public FormFlowInstanceFeature(FormFlowInstance instance)
         {
