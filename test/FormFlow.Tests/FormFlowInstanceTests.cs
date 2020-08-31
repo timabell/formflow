@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using FormFlow.State;
 using Moq;
 using Xunit;
@@ -10,7 +9,7 @@ namespace FormFlow.Tests
     public class FormFlowInstanceTests
     {
         [Fact]
-        public async Task Delete_CallsDeleteOnStateProvider()
+        public void Delete_CallsDeleteOnStateProvider()
         {
             // Arrange
             var instanceId = new FormFlowInstanceId("instance", new Microsoft.AspNetCore.Routing.RouteValueDictionary());
@@ -28,14 +27,14 @@ namespace FormFlow.Tests
             var newState = new MyState();
 
             // Act
-            await instance.Delete();
+            instance.Delete();
 
             // Assert
             stateProvider.Verify(mock => mock.DeleteInstance(instanceId));
         }
 
         [Fact]
-        public async Task UpdateState_DeletedInstance_ThrowsInvalidOperationException()
+        public void UpdateState_DeletedInstance_ThrowsInvalidOperationException()
         {
             // Arrange
             var instanceId = new FormFlowInstanceId("instance", new Microsoft.AspNetCore.Routing.RouteValueDictionary());
@@ -52,14 +51,14 @@ namespace FormFlow.Tests
 
             var newState = new MyState();
 
-            await instance.Delete();
+            instance.Delete();
 
             // Act & Assert
-            await Assert.ThrowsAsync<InvalidOperationException>(() => instance.UpdateState(newState));
+            Assert.Throws<InvalidOperationException>(() => instance.UpdateState(newState));
         }
 
         [Fact]
-        public async Task UpdateState_CallsUpdateStateOnStateProvider()
+        public void UpdateState_CallsUpdateStateOnStateProvider()
         {
             // Arrange
             var instanceId = new FormFlowInstanceId("instance", new Microsoft.AspNetCore.Routing.RouteValueDictionary());
@@ -77,7 +76,7 @@ namespace FormFlow.Tests
             var newState = new MyState();
 
             // Act
-            await instance.UpdateState(newState);
+            instance.UpdateState(newState);
 
             // Assert
             stateProvider.Verify(mock => mock.UpdateInstanceState(instanceId, newState));

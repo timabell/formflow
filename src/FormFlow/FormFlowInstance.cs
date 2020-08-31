@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using FormFlow.State;
 
 namespace FormFlow
@@ -48,18 +47,18 @@ namespace FormFlow
             return (FormFlowInstance)Activator.CreateInstance(genericType, stateProvider, key, instanceId, state, properties);
         }
 
-        public async Task Delete()
+        public void Delete()
         {
             if (_isDeleted)
             {
                 return;
             }
 
-            await _stateProvider.DeleteInstance(InstanceId);
+            _stateProvider.DeleteInstance(InstanceId);
             _isDeleted = true;
         }
 
-        protected async Task UpdateState(object state)
+        protected void UpdateState(object state)
         {
             if (state == null)
             {
@@ -76,7 +75,7 @@ namespace FormFlow
                 throw new InvalidOperationException("Instance has been deleted.");
             }
 
-            await _stateProvider.UpdateInstanceState(InstanceId, state);
+            _stateProvider.UpdateInstanceState(InstanceId, state);
             State = state;
         }
     }
@@ -95,9 +94,9 @@ namespace FormFlow
 
         public new TState State => (TState)base.State;
 
-        public Task UpdateState(TState state) => UpdateState((object)state);
+        public void UpdateState(TState state) => UpdateState((object)state);
 
-        public Task UpdateState(Func<TState, TState> update)
+        public void UpdateState(Func<TState, TState> update)
         {
             if (update == null)
             {
@@ -105,7 +104,7 @@ namespace FormFlow
             }
 
             var newState = update(State);
-            return UpdateState(newState);
+            UpdateState(newState);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using FormFlow.State;
 
 namespace FormFlow.Tests
@@ -16,7 +15,7 @@ namespace FormFlow.Tests
 
         public void Clear() => _instances.Clear();
 
-        public Task<FormFlowInstance> CreateInstance(
+        public FormFlowInstance CreateInstance(
             string key,
             FormFlowInstanceId instanceId,
             Type stateType,
@@ -39,17 +38,15 @@ namespace FormFlow.Tests
                 state,
                 properties ?? new Dictionary<object, object>());
 
-            return Task.FromResult(instance);
+            return instance;
         }
 
-        public Task DeleteInstance(FormFlowInstanceId instanceId)
+        public void DeleteInstance(FormFlowInstanceId instanceId)
         {
             _instances.Remove(instanceId);
-
-            return Task.CompletedTask;
         }
 
-        public Task<FormFlowInstance> GetInstance(FormFlowInstanceId instanceId)
+        public FormFlowInstance GetInstance(FormFlowInstanceId instanceId)
         {
             _instances.TryGetValue(instanceId, out var entry);
 
@@ -57,14 +54,12 @@ namespace FormFlow.Tests
                 FormFlowInstance.Create(this, entry.Key, instanceId, entry.StateType, entry.State, entry.Properties) :
                 null;
 
-            return Task.FromResult(instance);
+            return instance;
         }
 
-        public Task UpdateInstanceState(FormFlowInstanceId instanceId, object state)
+        public void UpdateInstanceState(FormFlowInstanceId instanceId, object state)
         {
             _instances[instanceId].State = state;
-
-            return Task.CompletedTask;
         }
 
         private class Entry

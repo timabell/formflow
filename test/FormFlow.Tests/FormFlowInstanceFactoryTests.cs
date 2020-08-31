@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using FormFlow.Metadata;
 using FormFlow.State;
 using Microsoft.AspNetCore.Http;
@@ -15,7 +14,7 @@ namespace FormFlow.Tests
     public class FormFlowInstanceFactoryTests
     {
         [Fact]
-        public async Task CreateInstance_StateTypeDoesNotMatchDescriptor_ThrowsInvalidOperationException()
+        public void CreateInstance_StateTypeDoesNotMatchDescriptor_ThrowsInvalidOperationException()
         {
             // Arrange
             var key = "test-flow";
@@ -38,12 +37,12 @@ namespace FormFlow.Tests
             var instanceFactory = new FormFlowInstanceFactory(flowDescriptor, actionContext, stateProvider.Object);
 
             // Act & Assert
-            await Assert.ThrowsAsync<InvalidOperationException>(
+            Assert.Throws<InvalidOperationException>(
                 () => instanceFactory.CreateInstance(new AnotherTestState()));
         }
 
         [Fact]
-        public async Task CreateInstance_CreatesInstanceWithStateProvider()
+        public void CreateInstance_CreatesInstanceWithStateProvider()
         {
             // Arrange
             var key = "test-flow";
@@ -72,7 +71,7 @@ namespace FormFlow.Tests
             };
 
             // Act
-            var instance = await instanceFactory.CreateInstance(state, properties);
+            var instance = instanceFactory.CreateInstance(state, properties);
 
             // Assert
             Assert.NotNull(instance);
@@ -85,7 +84,7 @@ namespace FormFlow.Tests
         }
 
         [Fact]
-        public async Task CreateInstance_RouteValuesIdGenerationSource_CreatesInstanceWithGeneratedId()
+        public void CreateInstance_RouteValuesIdGenerationSource_CreatesInstanceWithGeneratedId()
         {
             // Arrange
             var key = "test-flow";
@@ -117,7 +116,7 @@ namespace FormFlow.Tests
             var state = new TestState();
 
             // Act
-            var instance = await instanceFactory.CreateInstance(state);
+            var instance = instanceFactory.CreateInstance(state);
 
             // Assert
             Assert.NotNull(instance);

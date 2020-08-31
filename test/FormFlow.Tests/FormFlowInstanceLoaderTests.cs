@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using FormFlow.Metadata;
 using FormFlow.State;
 using Microsoft.AspNetCore.Http;
@@ -15,7 +14,7 @@ namespace FormFlow.Tests
     public class FormFlowInstanceLoaderTests
     {
         [Fact]
-        public async Task Resolve_ActionDescriptorHasNoFormFlowActionDescriptor_ReturnsNull()
+        public void Resolve_ActionDescriptorHasNoFormFlowActionDescriptor_ReturnsNull()
         {
             // Arrange
             var stateProvider = new Mock<IInstanceStateProvider>();
@@ -31,14 +30,14 @@ namespace FormFlow.Tests
             var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
 
             // Act
-            var result = await instanceResolver.Resolve(actionContext);
+            var result = instanceResolver.Resolve(actionContext);
 
             // Assert
             Assert.Null(result);
         }
 
         [Fact]
-        public async Task Resolve_CannotExtractId_ReturnsNull()
+        public void Resolve_CannotExtractId_ReturnsNull()
         {
             // Arrange
             var key = "test-flow";
@@ -49,7 +48,7 @@ namespace FormFlow.Tests
             var stateProvider = new Mock<IInstanceStateProvider>();
             stateProvider
                 .Setup(s => s.GetInstance(instanceId))
-                .ReturnsAsync(FormFlowInstance.Create(stateProvider.Object, key, instanceId, stateType, state, properties: new Dictionary<object, object>()));
+                .Returns(FormFlowInstance.Create(stateProvider.Object, key, instanceId, stateType, state, properties: new Dictionary<object, object>()));
 
             var instanceResolver = new FormFlowInstanceLoader(
                 stateProvider.Object,
@@ -66,14 +65,14 @@ namespace FormFlow.Tests
             var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
 
             // Act
-            var result = await instanceResolver.Resolve(actionContext);
+            var result = instanceResolver.Resolve(actionContext);
 
             // Assert
             Assert.Null(result);
         }
 
         [Fact]
-        public async Task Resolve_InstanceDoesNotExistInStateStore_ReturnsNull()
+        public void Resolve_InstanceDoesNotExistInStateStore_ReturnsNull()
         {
             // Arrange
             var key = "test-flow";
@@ -100,14 +99,14 @@ namespace FormFlow.Tests
             var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
 
             // Act
-            var result = await instanceResolver.Resolve(actionContext);
+            var result = instanceResolver.Resolve(actionContext);
 
             // Assert
             Assert.Null(result);
         }
 
         [Fact]
-        public async Task Resolve_MismatchingKeys_ReturnsNull()
+        public void Resolve_MismatchingKeys_ReturnsNull()
         {
             // Arrange
             var key = "test-flow";
@@ -118,7 +117,7 @@ namespace FormFlow.Tests
             var stateProvider = new Mock<IInstanceStateProvider>();
             stateProvider
                 .Setup(s => s.GetInstance(instanceId))
-                .ReturnsAsync(FormFlowInstance.Create(stateProvider.Object, key, instanceId, stateType, state, properties: new Dictionary<object, object>()));
+                .Returns(FormFlowInstance.Create(stateProvider.Object, key, instanceId, stateType, state, properties: new Dictionary<object, object>()));
 
             var instanceResolver = new FormFlowInstanceLoader(
                 stateProvider.Object,
@@ -138,14 +137,14 @@ namespace FormFlow.Tests
             var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
 
             // Act
-            var result = await instanceResolver.Resolve(actionContext);
+            var result = instanceResolver.Resolve(actionContext);
 
             // Assert
             Assert.Null(result);
         }
 
         [Fact]
-        public async Task Resolve_MismatchingStateType_ReturnsNull()
+        public void Resolve_MismatchingStateType_ReturnsNull()
         {
             // Arrange
             var key = "test-flow";
@@ -156,7 +155,7 @@ namespace FormFlow.Tests
             var stateProvider = new Mock<IInstanceStateProvider>();
             stateProvider
                 .Setup(s => s.GetInstance(instanceId))
-                .ReturnsAsync(FormFlowInstance.Create(stateProvider.Object, key, instanceId, stateType, state, properties: new Dictionary<object, object>()));
+                .Returns(FormFlowInstance.Create(stateProvider.Object, key, instanceId, stateType, state, properties: new Dictionary<object, object>()));
 
             var instanceResolver = new FormFlowInstanceLoader(
                 stateProvider.Object,
@@ -176,14 +175,14 @@ namespace FormFlow.Tests
             var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
 
             // Act
-            var result = await instanceResolver.Resolve(actionContext);
+            var result = instanceResolver.Resolve(actionContext);
 
             // Assert
             Assert.Null(result);
         }
 
         [Fact]
-        public async Task Resolve_ValidRequest_ReturnsInstanceAndAddsFeature()
+        public void Resolve_ValidRequest_ReturnsInstanceAndAddsFeature()
         {
             // Arrange
             var key = "test-flow";
@@ -194,7 +193,7 @@ namespace FormFlow.Tests
             var stateProvider = new Mock<IInstanceStateProvider>();
             stateProvider
                 .Setup(s => s.GetInstance(instanceId))
-                .ReturnsAsync(FormFlowInstance.Create(stateProvider.Object, key, instanceId, stateType, state, properties: new Dictionary<object, object>()));
+                .Returns(FormFlowInstance.Create(stateProvider.Object, key, instanceId, stateType, state, properties: new Dictionary<object, object>()));
 
             var instanceResolver = new FormFlowInstanceLoader(
                 stateProvider.Object,
@@ -214,7 +213,7 @@ namespace FormFlow.Tests
             var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
 
             // Act
-            var result = await instanceResolver.Resolve(actionContext);
+            var result = instanceResolver.Resolve(actionContext);
 
             // Assert
             Assert.NotNull(result);

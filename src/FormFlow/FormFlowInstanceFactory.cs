@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using FormFlow.Metadata;
 using FormFlow.State;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +22,7 @@ namespace FormFlow
             _stateProvider = stateProvider ?? throw new ArgumentNullException(nameof(stateProvider));
         }
         
-        public async Task<FormFlowInstance<TState>> CreateInstance<TState>(
+        public FormFlowInstance<TState> CreateInstance<TState>(
             TState state,
             IReadOnlyDictionary<object, object> properties = null)
         {
@@ -43,7 +42,7 @@ namespace FormFlow
                 _actionContext.RouteData,
                 _flowDescriptor);
 
-            return (FormFlowInstance<TState>)await _stateProvider.CreateInstance(
+            return (FormFlowInstance<TState>)_stateProvider.CreateInstance(
                 _flowDescriptor.Key,
                 instanceId,
                 _flowDescriptor.StateType,

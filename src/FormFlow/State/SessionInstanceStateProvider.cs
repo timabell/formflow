@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
 namespace FormFlow.State
@@ -18,7 +17,7 @@ namespace FormFlow.State
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
-        public Task<FormFlowInstance> CreateInstance(
+        public FormFlowInstance CreateInstance(
             string key,
             FormFlowInstanceId instanceId,
             Type stateType,
@@ -55,21 +54,18 @@ namespace FormFlow.State
             var sessionKey = GetSessionKeyForInstance(instanceId);
             session.Set(sessionKey, serialized);
 
-            var instance = FormFlowInstance.Create(this, key, instanceId, stateType, state, properties);
-            return Task.FromResult(instance);
+            return FormFlowInstance.Create(this, key, instanceId, stateType, state, properties);
         }
 
-        public Task DeleteInstance(FormFlowInstanceId instanceId)
+        public void DeleteInstance(FormFlowInstanceId instanceId)
         {
             var session = _httpContextAccessor.HttpContext.Session;
             var sessionKey = GetSessionKeyForInstance(instanceId);
 
             session.Remove(sessionKey);
-
-            return Task.CompletedTask;
         }
 
-        public Task<FormFlowInstance> GetInstance(FormFlowInstanceId instanceId)
+        public FormFlowInstance GetInstance(FormFlowInstanceId instanceId)
         {
             var session = _httpContextAccessor.HttpContext.Session;
             var sessionKey = GetSessionKeyForInstance(instanceId);
@@ -80,14 +76,13 @@ namespace FormFlow.State
 
                 var stateType = Type.GetType(entry.StateTypeAssemblyQualifiedName);
 
-                var instance = FormFlowInstance.Create(
+                return FormFlowInstance.Create(
                     this,
                     entry.Key,
                     instanceId,
                     stateType,
                     entry.State,
                     entry.Properties);
-                return Task.FromResult(instance);
             }
             else
             {
@@ -95,7 +90,7 @@ namespace FormFlow.State
             }
         }
 
-        public Task UpdateInstanceState(FormFlowInstanceId instanceId, object state)
+        public void UpdateInstanceState(FormFlowInstanceId instanceId, object state)
         {
             var session = _httpContextAccessor.HttpContext.Session;
             var sessionKey = GetSessionKeyForInstance(instanceId);
@@ -113,8 +108,6 @@ namespace FormFlow.State
             {
                 throw new ArgumentException("Instance does not exist.", nameof(instanceId));
             }
-
-            return Task.CompletedTask;
         }
 
         // TODO Make this configurable

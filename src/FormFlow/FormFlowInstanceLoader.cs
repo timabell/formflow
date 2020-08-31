@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using FormFlow.Metadata;
 using FormFlow.State;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +18,7 @@ namespace FormFlow
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<FormFlowInstance> Resolve(ActionContext actionContext)
+        public FormFlowInstance Resolve(ActionContext actionContext)
         {
             if (actionContext == null)
             {
@@ -52,7 +51,7 @@ namespace FormFlow
                 return null;
             }
 
-            var instance = await _stateProvider.GetInstance(instanceId);
+            var instance = _stateProvider.GetInstance(instanceId);
             if (instance == null)
             {
                 _logger.LogWarning(

@@ -16,18 +16,18 @@ namespace FormFlow.ModelBinding
             _stateProvider = stateProvider ?? throw new ArgumentNullException(nameof(stateProvider));
         }
 
-        public async Task BindModelAsync(ModelBindingContext bindingContext)
+        public Task BindModelAsync(ModelBindingContext bindingContext)
         {
             if (bindingContext.ModelType != typeof(FormFlowInstance) &&
                 !(bindingContext.ModelType.IsGenericType && bindingContext.ModelType.GetGenericTypeDefinition() == typeof(FormFlowInstance<>)))
             {
-                return;
+                return Task.CompletedTask;
             }
 
             var flowDescriptor = bindingContext.ActionContext.ActionDescriptor.GetProperty<FormFlowDescriptor>();
             if (flowDescriptor == null)
             {
-                return;
+                return Task.CompletedTask;
             }
 
             if (!FormFlowInstanceId.TryResolve(
@@ -36,16 +36,17 @@ namespace FormFlow.ModelBinding
                 flowDescriptor,
                 out var instanceId))
             {
-                return;
+                return Task.CompletedTask;
             }
 
-            var instance = await _stateProvider.GetInstance(instanceId);
+            var instance = _stateProvider.GetInstance(instanceId);
             if (instance == null)
             {
-                return;
+                return Task.CompletedTask;
             }
 
             bindingContext.Result = ModelBindingResult.Success(instance);
+            return Task.CompletedTask;
         }
     }
 }
