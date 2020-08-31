@@ -1,5 +1,6 @@
 ﻿using System;
 using FormFlow.Filters;
+using FormFlow.ModelBinding;
 using FormFlow.State;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,11 +19,15 @@ namespace FormFlow
 
             services.AddHttpContextAccessor();
             services.AddSingleton<FormFlowInstanceProvider>();
-            services.TryAddSingleton<IInstanceStateProvider, SessionInstanceStateProvider>();
+            services.AddSingleton<IStateSerializer, JsonStateSerializer>();
+            services.AddSingleton<IInstanceStateProvider, SessionInstanceStateProvider>();
 
             services.Configure<MvcOptions>(options =>
             {
                 options.Filters.Add(new MissingInstanceActionFilter());
+
+                options.ModelBinderProviders.Insert(0, new InstanceFactoryModelBinderProvider());
+                options.ModelBinderProviders.Insert(0, new InstanceModelBinderProvider());
             });
 
             return services;
