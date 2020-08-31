@@ -20,7 +20,7 @@ namespace FormFlow
 
             foreach (var kvp in instanceId.RouteValues)
             {
-                result.RouteValues.Add(kvp.Key, kvp.Value);
+                result.RouteValues[kvp.Key] = kvp.Value;
             }
 
             return result;
