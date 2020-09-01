@@ -49,7 +49,6 @@ namespace FormFlow
                 _flowDescriptor.StateType,
                 state, properties);
 
-            // REVIEW: Use FormFlowInstanceProvider here?
             _actionContext.HttpContext.Features.Set(new FormFlowInstanceFeature(instance));
 
             return instance;
@@ -70,7 +69,6 @@ namespace FormFlow
                     $"{typeof(TState).Name} is not compatible with {_flowDescriptor.StateType.Name}.");
             }
 
-            // REVIEW: Use FormFlowInstanceProvider here?
             var currentInstance = _actionContext.HttpContext.Features.Get<FormFlowInstanceFeature>()?.Instance;
             if (currentInstance != null)
             {
@@ -97,7 +95,6 @@ namespace FormFlow
                     $"{typeof(TState).Name} is not compatible with {_flowDescriptor.StateType.Name}.");
             }
 
-            // REVIEW: Use FormFlowInstanceProvider here?
             var currentInstance = _actionContext.HttpContext.Features.Get<FormFlowInstanceFeature>()?.Instance;
             if (currentInstance != null)
             {

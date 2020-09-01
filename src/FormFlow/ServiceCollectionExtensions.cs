@@ -5,6 +5,7 @@ using FormFlow.Filters;
 using FormFlow.ModelBinding;
 using FormFlow.State;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -20,6 +21,7 @@ namespace FormFlow
             }
 
             services.AddHttpContextAccessor();
+            services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddSingleton<FormFlowInstanceProvider>();
             services.TryAddSingleton<IStateSerializer, JsonStateSerializer>();
             services.TryAddSingleton<IUserInstanceStateProvider, UserInstanceStateProvider>();

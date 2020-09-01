@@ -171,7 +171,7 @@ namespace FormFlow.Tests
         }
 
         [Fact]
-        public void Resolve_ValidRequest_ReturnsInstanceAndAddsFeature()
+        public void Resolve_ValidRequest_ReturnsInstance()
         {
             // Arrange
             var key = "test-flow";
@@ -207,12 +207,6 @@ namespace FormFlow.Tests
             Assert.Equal(key, result.Key);
             Assert.Equal(instanceId, result.InstanceId);
             Assert.Equal(stateType, result.StateType);
-
-            var feature = httpContext.Features.Get<FormFlowInstanceFeature>();
-            Assert.NotNull(feature);
-            Assert.Equal(key, feature.Instance.Key);
-            Assert.Equal(instanceId, feature.Instance.InstanceId);
-            Assert.Equal(stateType, feature.Instance.StateType);
         }
 
         private class TestState { }

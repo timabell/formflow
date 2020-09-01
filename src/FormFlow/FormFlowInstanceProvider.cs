@@ -1,21 +1,47 @@
 ﻿using System;
-using Microsoft.AspNetCore.Http;
+using FormFlow.State;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace FormFlow
 {
     public class FormFlowInstanceProvider
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IUserInstanceStateProvider _stateProvider;
+        private readonly IActionContextAccessor _actionContextAccessor;
 
-        public FormFlowInstanceProvider(IHttpContextAccessor httpContextAccessor)
+        public FormFlowInstanceProvider(
+            IUserInstanceStateProvider stateProvider,
+            IActionContextAccessor actionContextAccessor)
         {
-            _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+            _stateProvider = stateProvider ?? throw new ArgumentNullException(nameof(stateProvider));
+            _actionContextAccessor = actionContextAccessor ?? throw new ArgumentNullException(nameof(actionContextAccessor));
         }
 
         public FormFlowInstance GetInstance()
         {
-            var httpContext = _httpContextAccessor.HttpContext;
-            return httpContext.Features.Get<FormFlowInstanceFeature>()?.Instance;
+            var actionContext = _actionContextAccessor.ActionContext;
+            if (actionContext == null)
+            {
+                throw new InvalidOperationException("No ActionContext set.");
+            }
+
+            var httpContext = actionContext.HttpContext;
+
+            var feature = httpContext.Features.Get<FormFlowInstanceFeature>();
+            if (feature != null)
+            {
+                return feature.Instance;
+            }
+
+            var instanceResolver = new InstanceResolver(_stateProvider);
+            var instance = instanceResolver.Resolve(actionContext);
+
+            if (instance != null)
+            {
+                httpContext.Features.Set(new FormFlowInstanceFeature(instance));
+            }
+
+            return instance;
         }
 
         public FormFlowInstance<T> GetInstance<T>()

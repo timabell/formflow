@@ -21,12 +21,6 @@ namespace FormFlow
             {
                 throw new ArgumentNullException(nameof(actionContext));
             }
-
-            var feature = actionContext.HttpContext.Features.Get<FormFlowInstanceFeature>();
-            if (feature != null)
-            {
-                return feature.Instance;
-            }
             
             var flowDescriptor = actionContext.ActionDescriptor.GetProperty<FormFlowDescriptor>();
             if (flowDescriptor == null)
@@ -58,8 +52,6 @@ namespace FormFlow
             {
                 return null;
             }
-
-            actionContext.HttpContext.Features.Set(new FormFlowInstanceFeature(instance));
 
             return instance;
         }
