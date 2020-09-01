@@ -11,12 +11,12 @@ namespace FormFlow
     {
         private readonly FormFlowDescriptor _flowDescriptor;
         private readonly ActionContext _actionContext;
-        private readonly IInstanceStateProvider _stateProvider;
+        private readonly IUserInstanceStateProvider _stateProvider;
 
         public FormFlowInstanceFactory(
             FormFlowDescriptor flowDescriptor,
             ActionContext actionContext,
-            IInstanceStateProvider stateProvider)
+            IUserInstanceStateProvider stateProvider)
         {
             _flowDescriptor = flowDescriptor ?? throw new ArgumentNullException(nameof(flowDescriptor));
             _actionContext = actionContext ?? throw new ArgumentNullException(nameof(actionContext));

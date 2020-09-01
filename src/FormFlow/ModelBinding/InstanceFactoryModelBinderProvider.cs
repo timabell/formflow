@@ -14,7 +14,7 @@ namespace FormFlow.ModelBinding
         {
             if (context.Metadata.ModelType == typeof(FormFlowInstanceFactory))
             {
-                var stateProvider = context.Services.GetRequiredService<IInstanceStateProvider>();
+                var stateProvider = context.Services.GetRequiredService<IUserInstanceStateProvider>();
                 return new InstanceFactoryModelBinder(stateProvider);
             }
 

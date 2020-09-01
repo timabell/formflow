@@ -16,7 +16,7 @@ namespace FormFlow.Tests
         public void Resolve_ActionDescriptorHasNoFormFlowActionDescriptor_ReturnsNull()
         {
             // Arrange
-            var stateProvider = new Mock<IInstanceStateProvider>();
+            var stateProvider = new Mock<IUserInstanceStateProvider>();
 
             var instanceResolver = new InstanceResolver(stateProvider.Object);
 
@@ -42,7 +42,7 @@ namespace FormFlow.Tests
             var stateType = typeof(TestState);
             var state = new TestState();
 
-            var stateProvider = new Mock<IInstanceStateProvider>();
+            var stateProvider = new Mock<IUserInstanceStateProvider>();
             stateProvider
                 .Setup(s => s.GetInstance(instanceId))
                 .Returns(FormFlowInstance.Create(stateProvider.Object, key, instanceId, stateType, state, properties: new Dictionary<object, object>()));
@@ -74,7 +74,7 @@ namespace FormFlow.Tests
             var instanceId = "the-instance";
             var stateType = typeof(TestState);
 
-            var stateProvider = new Mock<IInstanceStateProvider>();
+            var stateProvider = new Mock<IUserInstanceStateProvider>();
 
             var instanceResolver = new InstanceResolver(stateProvider.Object);
 
@@ -107,7 +107,7 @@ namespace FormFlow.Tests
             var stateType = typeof(TestState);
             var state = new TestState();
 
-            var stateProvider = new Mock<IInstanceStateProvider>();
+            var stateProvider = new Mock<IUserInstanceStateProvider>();
             stateProvider
                 .Setup(s => s.GetInstance(instanceId))
                 .Returns(FormFlowInstance.Create(stateProvider.Object, key, instanceId, stateType, state, properties: new Dictionary<object, object>()));
@@ -143,7 +143,7 @@ namespace FormFlow.Tests
             var stateType = typeof(TestState);
             var state = new TestState();
 
-            var stateProvider = new Mock<IInstanceStateProvider>();
+            var stateProvider = new Mock<IUserInstanceStateProvider>();
             stateProvider
                 .Setup(s => s.GetInstance(instanceId))
                 .Returns(FormFlowInstance.Create(stateProvider.Object, key, instanceId, stateType, state, properties: new Dictionary<object, object>()));
@@ -179,7 +179,7 @@ namespace FormFlow.Tests
             var stateType = typeof(TestState);
             var state = new TestState();
             
-            var stateProvider = new Mock<IInstanceStateProvider>();
+            var stateProvider = new Mock<IUserInstanceStateProvider>();
             stateProvider
                 .Setup(s => s.GetInstance(instanceId))
                 .Returns(FormFlowInstance.Create(stateProvider.Object, key, instanceId, stateType, state, properties: new Dictionary<object, object>()));

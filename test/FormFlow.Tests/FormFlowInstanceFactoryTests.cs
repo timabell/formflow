@@ -33,7 +33,7 @@ namespace FormFlow.Tests
 
             var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
 
-            var stateProvider = new Mock<IInstanceStateProvider>();
+            var stateProvider = new Mock<IUserInstanceStateProvider>();
 
             var instanceFactory = new FormFlowInstanceFactory(flowDescriptor, actionContext, stateProvider.Object);
 
@@ -147,7 +147,7 @@ namespace FormFlow.Tests
 
             var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
 
-            var stateProvider = new Mock<IInstanceStateProvider>();
+            var stateProvider = new Mock<IUserInstanceStateProvider>();
 
             var instanceFactory = new FormFlowInstanceFactory(flowDescriptor, actionContext, stateProvider.Object);
 
@@ -249,7 +249,7 @@ namespace FormFlow.Tests
 
             var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
 
-            var stateProvider = new Mock<IInstanceStateProvider>();
+            var stateProvider = new Mock<IUserInstanceStateProvider>();
 
             var instanceFactory = new FormFlowInstanceFactory(flowDescriptor, actionContext, stateProvider.Object);
 

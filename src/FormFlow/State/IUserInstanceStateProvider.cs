@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FormFlow.State
 {
-    public interface IInstanceStateProvider
+    public interface IUserInstanceStateProvider
     {
         void CompleteInstance(FormFlowInstanceId instanceId);
 

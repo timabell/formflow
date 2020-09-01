@@ -8,9 +8,9 @@ namespace FormFlow
 {
     internal class InstanceResolver
     {
-        private readonly IInstanceStateProvider _stateProvider;
+        private readonly IUserInstanceStateProvider _stateProvider;
 
-        public InstanceResolver(IInstanceStateProvider stateProvider)
+        public InstanceResolver(IUserInstanceStateProvider stateProvider)
         {
             _stateProvider = stateProvider ?? throw new ArgumentNullException(nameof(stateProvider));
         }

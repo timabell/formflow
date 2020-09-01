@@ -6,10 +6,10 @@ namespace FormFlow
 {
     public class FormFlowInstance
     {
-        private readonly IInstanceStateProvider _stateProvider;
+        private readonly IUserInstanceStateProvider _stateProvider;
 
         private protected FormFlowInstance(
-            IInstanceStateProvider stateProvider,
+            IUserInstanceStateProvider stateProvider,
             string key,
             FormFlowInstanceId instanceId,
             Type stateType,
@@ -39,7 +39,7 @@ namespace FormFlow
         public Type StateType { get; }
 
         public static FormFlowInstance Create(
-            IInstanceStateProvider stateProvider,
+            IUserInstanceStateProvider stateProvider,
             string key,
             FormFlowInstanceId instanceId,
             Type stateType,
@@ -106,7 +106,7 @@ namespace FormFlow
     public sealed class FormFlowInstance<TState> : FormFlowInstance
     {
         public FormFlowInstance(
-            IInstanceStateProvider stateProvider,
+            IUserInstanceStateProvider stateProvider,
             string key,
             FormFlowInstanceId instanceId,
             TState state,

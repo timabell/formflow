@@ -14,7 +14,7 @@ namespace FormFlow.Tests
             // Arrange
             var instanceId = new FormFlowInstanceId("instance", new Microsoft.AspNetCore.Routing.RouteValueDictionary());
 
-            var stateProvider = new Mock<IInstanceStateProvider>();
+            var stateProvider = new Mock<IUserInstanceStateProvider>();
 
             var instance = (FormFlowInstance<MyState>)FormFlowInstance.Create(
                 stateProvider.Object,
@@ -39,7 +39,7 @@ namespace FormFlow.Tests
             // Arrange
             var instanceId = new FormFlowInstanceId("instance", new Microsoft.AspNetCore.Routing.RouteValueDictionary());
 
-            var stateProvider = new Mock<IInstanceStateProvider>();
+            var stateProvider = new Mock<IUserInstanceStateProvider>();
 
             var instance = (FormFlowInstance<MyState>)FormFlowInstance.Create(
                 stateProvider.Object,
@@ -63,7 +63,7 @@ namespace FormFlow.Tests
             // Arrange
             var instanceId = new FormFlowInstanceId("instance", new Microsoft.AspNetCore.Routing.RouteValueDictionary());
 
-            var stateProvider = new Mock<IInstanceStateProvider>();
+            var stateProvider = new Mock<IUserInstanceStateProvider>();
 
             var instance = (FormFlowInstance<MyState>)FormFlowInstance.Create(
                 stateProvider.Object,

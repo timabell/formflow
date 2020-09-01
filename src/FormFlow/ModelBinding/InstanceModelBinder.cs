@@ -7,9 +7,9 @@ namespace FormFlow.ModelBinding
 {
     public class InstanceModelBinder : IModelBinder
     {
-        private readonly IInstanceStateProvider _stateProvider;
+        private readonly IUserInstanceStateProvider _stateProvider;
 
-        public InstanceModelBinder(IInstanceStateProvider stateProvider)
+        public InstanceModelBinder(IUserInstanceStateProvider stateProvider)
         {
             _stateProvider = stateProvider ?? throw new ArgumentNullException(nameof(stateProvider));
         }

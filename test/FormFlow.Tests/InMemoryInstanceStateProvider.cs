@@ -4,7 +4,7 @@ using FormFlow.State;
 
 namespace FormFlow.Tests
 {
-    public class InMemoryInstanceStateProvider : IInstanceStateProvider
+    public class InMemoryInstanceStateProvider : IUserInstanceStateProvider
     {
         private readonly Dictionary<string, Entry> _instances;
 

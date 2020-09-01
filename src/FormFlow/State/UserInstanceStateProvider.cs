@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Http;
 
 namespace FormFlow.State
 {
-    public class SessionInstanceStateProvider : IInstanceStateProvider
+    public class UserInstanceStateProvider : IUserInstanceStateProvider
     {
         private readonly IStateSerializer _stateSerializer;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IUserInstanceStateStore _store;
 
-        public SessionInstanceStateProvider(
+        public UserInstanceStateProvider(
             IStateSerializer stateSerializer,
-            IHttpContextAccessor httpContextAccessor)
+            IUserInstanceStateStore store)
         {
             _stateSerializer = stateSerializer ?? throw new ArgumentNullException(nameof(stateSerializer));
-            _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+            _store = store ?? throw new ArgumentNullException(nameof(store));
         }
 
         public FormFlowInstance CreateInstance(
@@ -41,7 +40,7 @@ namespace FormFlow.State
 
             properties ??= new Dictionary<object, object>();
 
-            var entry = new SessionEntry()
+            var entry = new StoreEntry()
             {
                 Key = key,
                 StateTypeAssemblyQualifiedName = stateType.AssemblyQualifiedName,
@@ -51,26 +50,24 @@ namespace FormFlow.State
             };
             var serialized = _stateSerializer.Serialize(entry);
 
-            var session = _httpContextAccessor.HttpContext.Session;
-            var sessionKey = GetSessionKeyForInstance(instanceId);
-            session.Set(sessionKey, serialized);
+            var storeKey = GetKeyForInstance(instanceId);
+            _store.SetState(storeKey, serialized);
 
             return FormFlowInstance.Create(this, key, instanceId, stateType, state, properties);
         }
 
         public void CompleteInstance(FormFlowInstanceId instanceId)
         {
-            var session = _httpContextAccessor.HttpContext.Session;
-            var sessionKey = GetSessionKeyForInstance(instanceId);
+            var storeKey = GetKeyForInstance(instanceId);
 
-            if (session.TryGetValue(sessionKey, out var serialized))
+            if (_store.TryGetState(storeKey, out var serialized))
             {
-                var entry = (SessionEntry)_stateSerializer.Deserialize(serialized);
+                var entry = (StoreEntry)_stateSerializer.Deserialize(serialized);
 
                 entry.Completed = true;
 
                 var updateSerialized = _stateSerializer.Serialize(entry);
-                session.Set(sessionKey, updateSerialized);
+                _store.SetState(storeKey, updateSerialized);
             }
             else
             {
@@ -80,12 +77,11 @@ namespace FormFlow.State
 
         public FormFlowInstance GetInstance(FormFlowInstanceId instanceId)
         {
-            var session = _httpContextAccessor.HttpContext.Session;
-            var sessionKey = GetSessionKeyForInstance(instanceId);
+            var storeKey = GetKeyForInstance(instanceId);
             
-            if (session.TryGetValue(sessionKey, out var serialized))
+            if (_store.TryGetState(storeKey, out var serialized))
             {
-                var entry = (SessionEntry)_stateSerializer.Deserialize(serialized);
+                var entry = (StoreEntry)_stateSerializer.Deserialize(serialized);
 
                 var stateType = Type.GetType(entry.StateTypeAssemblyQualifiedName);
 
@@ -106,17 +102,16 @@ namespace FormFlow.State
 
         public void UpdateInstanceState(FormFlowInstanceId instanceId, object state)
         {
-            var session = _httpContextAccessor.HttpContext.Session;
-            var sessionKey = GetSessionKeyForInstance(instanceId);
+            var storeKey = GetKeyForInstance(instanceId);
 
-            if (session.TryGetValue(sessionKey, out var serialized))
+            if (_store.TryGetState(storeKey, out var serialized))
             {
-                var entry = (SessionEntry)_stateSerializer.Deserialize(serialized);
+                var entry = (StoreEntry)_stateSerializer.Deserialize(serialized);
 
                 entry.State = state;
 
                 var updateSerialized = _stateSerializer.Serialize(entry);
-                session.Set(sessionKey, updateSerialized);
+                _store.SetState(storeKey, updateSerialized);
             }
             else
             {
@@ -125,10 +120,10 @@ namespace FormFlow.State
         }
 
         // TODO Make this configurable
-        private static string GetSessionKeyForInstance(string instanceId) =>
+        private static string GetKeyForInstance(string instanceId) =>
             $"FormFlowState:{instanceId}";
 
-        private class SessionEntry
+        private class StoreEntry
         {
             public string Key { get; set; }
             public string StateTypeAssemblyQualifiedName { get; set; }
