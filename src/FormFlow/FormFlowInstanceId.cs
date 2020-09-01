@@ -70,7 +70,7 @@ namespace FormFlow
 
         public static FormFlowInstanceId GenerateForRouteValues(
             string key,
-            IDictionary<string, object> routeValues)
+            IReadOnlyDictionary<string, object> routeValues)
         {
             if (key == null)
             {
@@ -248,7 +248,7 @@ namespace FormFlow
 
         public static implicit operator string(FormFlowInstanceId instanceId) => instanceId.ToString();
 
-        private static string GenerateIdForRouteValues(string key, IDictionary<string, object> routeValues)
+        private static string GenerateIdForRouteValues(string key, IReadOnlyDictionary<string, object> routeValues)
         {
             var urlEncoder = UrlEncoder.Default;
 
