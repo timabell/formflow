@@ -6,6 +6,7 @@ using FormFlow.ModelBinding;
 using FormFlow.State;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace FormFlow
 {
@@ -20,9 +21,9 @@ namespace FormFlow
 
             services.AddHttpContextAccessor();
             services.AddSingleton<FormFlowInstanceProvider>();
-            services.AddSingleton<IStateSerializer, JsonStateSerializer>();
-            services.AddSingleton<IUserInstanceStateProvider, UserInstanceStateProvider>();
-            services.AddSingleton<IUserInstanceStateStore, SessionUserInstanceStateStore>();
+            services.TryAddSingleton<IStateSerializer, JsonStateSerializer>();
+            services.TryAddSingleton<IUserInstanceStateProvider, UserInstanceStateProvider>();
+            services.TryAddSingleton<IUserInstanceStateStore, SessionUserInstanceStateStore>();
 
             services.Configure<MvcOptions>(options =>
             {
